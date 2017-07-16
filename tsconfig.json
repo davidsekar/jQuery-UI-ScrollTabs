@@ -1,0 +1,15 @@
+{
+  "exclude": [
+    "node_modules/*"
+  ],
+  "include": [
+    "ts/**/*"
+  ],
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "target": "es5",
+    "sourceMap":true,
+    "typeRoots": [
+    ]
+  }
+}
