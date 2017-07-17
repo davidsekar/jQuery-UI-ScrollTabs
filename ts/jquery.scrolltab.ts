@@ -39,6 +39,7 @@
       let $navNext: JQuery<HTMLElement>;
       let $navFirst: JQuery<HTMLElement>;
       let $navLast: JQuery<HTMLElement>;
+      const eventDelay: number = 100;
 
       opts = $.extend({}, settings, typeof opts === 'object' ? opts : {});
       $tabs = $(this).addClass(opts.wrapperCssClass + ' stMainWrapper');
@@ -179,6 +180,11 @@
           } */
         });
         _updateCurrentTab($tabs.find('li').eq(0));
+
+        $(window).on('resize', $.throttle(eventDelay, () => {
+          // To make sure to hide navigations if not needed
+          _showNavsIfNeeded();
+        }));
       }
 
       // Check if navigation need then show; otherwise hide it
@@ -191,8 +197,6 @@
           $arrowsNav.css('visibility', 'visible').show();
         } else {
           $arrowsNav.css('visibility', 'hidden').hide();
-          // And navigate the tabs to the first
-          _animateTabTo('f', $lis.first(), 0);
         }
       }
 
@@ -288,118 +292,118 @@
         return col;
       }
 
+      /**
+       * This function add the navigation control and binds the required events
+       */
       function _addNavEvents() {
+        // Handle next tab
         $navNext = $navNext || $();
         $navNext = _addCustomerSelToCollection($navNext, 'Next');
-
-        // Handle next tab
-        $navNext.click((e) => {
-          let $nxtLi = $();
-          // First check if user do not want to select tab on Next
-          // than we have to find the next hidden (out of viewport) tab so we can scroll to it
-          if (!opts.selectTabAfterScroll) {
-            $curSelectedTab.nextAll('li').each(function () {
-              // d($(this));
-              // d(_isHiddenOn('n', $(this)));
-              if (_isHiddenOn('n', $(this))) {
-                $nxtLi = $(this);
-                return false;
-              }
-            });
-          } else {
-            $nxtLi = $curSelectedTab.next('li');
-          }
-          // return;
-
-          // check if there is no next tab
-          if (!$nxtLi.length) {
-            log('You are on last tab, no next tab found.');
-            return false;
-          }
-
-          // check if li next to selected is in view or not
-          const isTabHidden = _isHiddenOn('n', $nxtLi);
-
-          // get index of next element
-          const indexNextTab = $lis.index($nxtLi);
-
-          if (isTabHidden) {
-            _animateTabTo('n', $nxtLi, indexNextTab, e);
-          } else {
-            $tabs.tabs('option', 'active', indexNextTab);
-          }
-        });
+        $navNext.on('click', $.debounce(eventDelay, _moveToNextTab));
 
         // Handle previous tab
         $navPrev = $navPrev || $();
         $navPrev = _addCustomerSelToCollection($navPrev, 'Prev');
-
-        $navPrev.click((e) => {
-          let $prvLi = $();
-
-          // First check if user do not want to select tab on Prev
-          // than we have to find the prev hidden (out of viewport) tab so we can scroll to it
-          if (!opts.selectTabAfterScroll) {
-            // Reverse the order of tabs list
-            $($lis.get().reverse()).each(function () {
-              if (_isHiddenOn('p', $(this))) {
-                $prvLi = $(this);
-                return false;
-              }
-            });
-          } else {
-            $prvLi = $curSelectedTab.prev('li');
-          }
-          // return;
-
-          if (!$prvLi.length) {
-            log('There is no previous tab. NO PREV TAB');
-            return false;
-          }
-
-          // check if li previous to selected is in view or not
-          const isTabHidden = _isHiddenOn('p', $prvLi);
-
-          // Get index of prev element
-          const indexPrevTab = $lis.index($prvLi);
-
-          if (isTabHidden) {
-            _animateTabTo('p', $prvLi, indexPrevTab, e);
-          } else {
-            $tabs.tabs('option', 'active', indexPrevTab);
-          }
-          return false;
-        });
+        $navPrev.on('click', $.debounce(eventDelay, _moveToPrevTab));
 
         // Handle First tab
         $navFirst = $navFirst || $();
         $navFirst = _addCustomerSelToCollection($navFirst, 'First');
-        $navFirst.click((e) => {
-          // check if li selected is the first tab already
-          if ($lis.index($curSelectedTab) === 0) {
-            console.log('You are on first tab already');
-            return false;
-          }
-          _animateTabTo('f', $lis.first(), 0, e);
-          return false;
-        });
+        $navFirst.on('click', $.debounce(eventDelay, _moveToFirstTab));
 
         // Handle last tab
         $navLast = $navLast || $();
         $navLast = _addCustomerSelToCollection($navLast, 'Last');
+        $navLast.on('click', $.debounce(eventDelay, _moveToLastTab));
+      }
 
-        $navLast.click((e) => {
-          // check if there is no next tab
-          const $lstLi = $curSelectedTab.next('li');
-          if (!$lstLi.length) {
-            log('You are already on the last tab. there is no more last tab.');
-            return false;
+      function _moveToNextTab(e: JQuery.Event) {
+        e.preventDefault();
+
+        let $nxtLi = $();
+        // First check if user do not want to select tab on Next
+        // than we have to find the next hidden (out of viewport) tab so we can scroll to it
+        if (!opts.selectTabAfterScroll) {
+          $curSelectedTab.nextAll('li').each(function () {
+            if (_isHiddenOn('n', $(this))) {
+              $nxtLi = $(this);
+              return;
+            }
+          });
+        } else {
+          $nxtLi = $curSelectedTab.next('li');
+        }
+
+        // check if there is no next tab
+        if ($nxtLi.length === 0) {
+          log('You are on last tab, no next tab found.');
+        } else {
+          // get index of next element
+          const indexNextTab = $lis.index($nxtLi);
+          // check if li next to selected is in view or not
+          if (_isHiddenOn('n', $nxtLi)) {
+            _animateTabTo('n', $nxtLi, indexNextTab, e);
+          } else {
+            $tabs.tabs('option', 'active', indexNextTab);
           }
+        }
+
+      }
+
+      function _moveToPrevTab(e: JQuery.Event) {
+        e.preventDefault();
+
+        let $prvLi = $();
+        // First check if user do not want to select tab on Prev
+        // than we have to find the prev hidden (out of viewport) tab so we can scroll to it
+        if (!opts.selectTabAfterScroll) {
+          // Reverse the order of tabs list
+          $($lis.get().reverse()).each(function () {
+            if (_isHiddenOn('p', $(this))) {
+              $prvLi = $(this);
+              return;
+            }
+          });
+        } else {
+          $prvLi = $curSelectedTab.prev('li');
+        }
+
+        if ($prvLi.length === 0) {
+          log('There is no previous tab. NO PREV TAB');
+        } else {
           // Get index of prev element
+          const indexPrevTab = $lis.index($prvLi);
+          // check if li previous to selected is in view or not
+          if (_isHiddenOn('p', $prvLi)) {
+            _animateTabTo('p', $prvLi, indexPrevTab, e);
+          } else {
+            $tabs.tabs('option', 'active', indexPrevTab);
+          }
+        }
+
+      }
+
+      function _moveToFirstTab(e?: JQuery.Event) {
+        if (e) {
+          e.preventDefault();
+        }
+        if ($lis.index($curSelectedTab) === 0) {
+          log('You are on first tab already');
+        } else {
+          _animateTabTo('f', $lis.first(), 0, e);
+        }
+      }
+
+      function _moveToLastTab(e: JQuery.Event) {
+        e.preventDefault();
+        const $lstLi = $curSelectedTab.next('li');
+        if ($lstLi.length === 0) {
+          log('You are already on the last tab. there is no more last tab.');
+          return;
+        } else {
           const indexLastTab = getTabCount() - 1;
           _animateTabTo('l', $lis.last(), indexLastTab, e);
-          return false;
-        });
+        }
       }
 
       function _updateCurrentTab($li: JQuery<HTMLElement>) {
