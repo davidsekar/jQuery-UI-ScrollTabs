@@ -2,28 +2,31 @@
 /// <reference path="../node_modules/@types/jqueryui/index.d.ts" />
 /// <reference path="../ts/jquery.scrolltab.d.ts" />
 (function ($) {
+    /**
+     * Default options to be used for initialization
+     * User provided values will override these values
+     */
     var settings = {
         animateTabs: false,
         showNavWhenNeeded: true,
-        customNavNext: '',
-        customNavPrev: '',
-        customNavFirst: '',
-        customNavLast: '',
+        customNavNext: null,
+        customNavPrev: null,
+        customNavFirst: null,
+        customNavLast: null,
         closable: true,
         easing: 'swing',
         loadLastTab: false,
         onTabScroll: function () {
             // empty
         },
-        resizable: false,
-        resizeHandles: 'e,s,se',
         scrollSpeed: 500,
         selectTabOnAdd: true,
         selectTabAfterScroll: true,
         showFirstLastArrows: true,
         hideDefaultArrows: false,
         nextPrevOutward: false,
-        wrapperCssClass: ''
+        wrapperCssClass: '',
+        enableDebug: false
     };
     $.fn.scrollabletabs = function (options) {
         return this.each(function () {
@@ -39,7 +42,9 @@
             var $navFirst;
             var $navLast;
             var eventDelay = 100;
-            opts = $.extend({}, settings, typeof opts === 'object' ? opts : {});
+            opts = $.extend({}, settings, typeof options === 'object' ? options : {});
+            var isDebouncePluginFound = $.debounce ? true : false;
+            log('Debounce plugin found - ' + isDebouncePluginFound);
             $tabs = $(this).addClass(opts.wrapperCssClass + ' stMainWrapper');
             $ul = $tabs.find('ul.ui-tabs-nav:first');
             $lis = $ul.find('li');
@@ -66,14 +71,39 @@
                     $(this).toggleClass('ui-state-active').toggleClass('ui-state-hover');
                 });
             }
-            function log(message) {
-                console.log(message);
+            /**
+             * If debounce/throttle plugin is found, it debounces the event handler function
+             * @param dbFunc the event handler function
+             */
+            function debounceEvent(dbFunc) {
+                return isDebouncePluginFound ? $.debounce(eventDelay, dbFunc) : dbFunc;
             }
             /**
-             * Returns number of tabs in $tabs as 'any' to avoid TS error
+             * If debounce/throttle plugin is found, it throttles the event handler function
+             * @param dbFunc the event handler function
+             */
+            function throttleEvent(dbFunc) {
+                return isDebouncePluginFound ? $.throttle(eventDelay, dbFunc) : dbFunc;
+            }
+            /**
+             * Centrally control all message to be logged to the console
+             * @param message -message to be displayed
+             */
+            function log(message, isError) {
+                if (opts.enableDebug) {
+                    if (isError === true) {
+                        console.error(message);
+                    }
+                    else {
+                        console.log(message);
+                    }
+                }
+            }
+            /**
+             * Returns number of tabs in $tabs widget
              */
             function getTabCount() {
-                return $tabs.children('ul > li').length;
+                return $tabs.children('ul.ui-tabs-nav > li').length;
             }
             function _init() {
                 var _this = this;
@@ -97,7 +127,7 @@
                     else {
                         $navFirst.addClass('ui-corner-left');
                         $navLast.addClass('ui-corner-right');
-                        // If we have first and last arrows to show than move the arrows inward
+                        // If we have first and last arrows to show, then move the arrows inward
                         // otherwise add the css classes to make their corners round.
                         opts.showFirstLastArrows ?
                             $navPrev.css('margin-left', $arrowsNav.find('li:first').outerWidth()) :
@@ -168,10 +198,7 @@
                     } */
                 });
                 _updateCurrentTab($tabs.find('li').eq(0));
-                $(window).on('resize', $.throttle(eventDelay, function () {
-                    // To make sure to hide navigations if not needed
-                    _showNavsIfNeeded();
-                }));
+                $(window).on('resize', throttleEvent(_showNavsIfNeeded));
             }
             // Check if navigation need then show; otherwise hide it
             function _showNavsIfNeeded() {
@@ -270,19 +297,19 @@
                 // Handle next tab
                 $navNext = $navNext || $();
                 $navNext = _addCustomerSelToCollection($navNext, 'Next');
-                $navNext.on('click', $.debounce(eventDelay, _moveToNextTab));
+                $navNext.on('click', debounceEvent(_moveToNextTab));
                 // Handle previous tab
                 $navPrev = $navPrev || $();
                 $navPrev = _addCustomerSelToCollection($navPrev, 'Prev');
-                $navPrev.on('click', $.debounce(eventDelay, _moveToPrevTab));
+                $navPrev.on('click', debounceEvent(_moveToPrevTab));
                 // Handle First tab
                 $navFirst = $navFirst || $();
                 $navFirst = _addCustomerSelToCollection($navFirst, 'First');
-                $navFirst.on('click', $.debounce(eventDelay, _moveToFirstTab));
+                $navFirst.on('click', debounceEvent(_moveToFirstTab));
                 // Handle last tab
                 $navLast = $navLast || $();
                 $navLast = _addCustomerSelToCollection($navLast, 'Last');
-                $navLast.on('click', $.debounce(eventDelay, _moveToLastTab));
+                $navLast.on('click', debounceEvent(_moveToLastTab));
             }
             function _moveToNextTab(e) {
                 e.preventDefault();

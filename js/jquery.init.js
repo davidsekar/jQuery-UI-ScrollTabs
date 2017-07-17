@@ -4,7 +4,7 @@ function d(m) {
     console.log(m);
 }
 $(function () {
-    //To get the random tabs label with variable length for testing the calculations			
+    //To get the random tabs label with variable length for testing the calculations
     var keywords = ["Just a tab label", "Long string", "Short", "Very very long string", "tab", "New tab", "This is a new tab"];
     if (scrollEnabled) {
         $tabs = $('#example_1')
@@ -14,11 +14,12 @@ $(function () {
             customNavPrev: '#p',
             customNavFirst: '#f',
             customNavLast: '#l',
-            easing: 'easeInBounce'
+            easing: 'swing',
+            enableDebug: true
         });
     }
     else {
-        //example 
+        //example
         $tabs = $('#example_1')
             .tabs();
     }
