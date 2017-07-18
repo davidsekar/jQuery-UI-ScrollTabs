@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## jQuery UI Scroll tabs
 
 ![Travis](https://travis-ci.org/davidsekar/jQuery-UI-ScrollTab.svg?branch=master)
 
