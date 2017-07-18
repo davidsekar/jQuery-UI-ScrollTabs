@@ -32,11 +32,12 @@
         return this.each(function () {
             var opts;
             var $tabs;
+            var $scrollDiv;
             var $ul;
             var $lis;
-            var $arrowsNav;
             var $curSelectedTab;
-            var $navLis;
+            var $leftArrowWrapper;
+            var $rightArrowWrapper;
             var $navPrev;
             var $navNext;
             var $navFirst;
@@ -48,29 +49,10 @@
             $tabs = $(this).addClass(opts.wrapperCssClass + ' stMainWrapper');
             $ul = $tabs.find('ul.ui-tabs-nav:first');
             $lis = $ul.find('li');
-            $arrowsNav = $('<ol class="stNavMain" />');
             // We will use our own css class to detect a selected tab
             // because we might want to scroll without tab being selected
             $curSelectedTab = $ul.find('.ui-tabs-selected')
                 .addClass('stCurrentTab');
-            // Navigation
-            if (!opts.hideDefaultArrows) {
-                $navPrev = $('<li class="stNavPrevArrow ui-state-active" title="Previous">' +
-                    '<span class="ui-icon ui-icon-seek-prev">Previous tab</span></li>');
-                $navNext = $('<li class="stNavNextArrow ui-state-active" title="Next">' +
-                    '<span class="ui-icon ui-icon-seek-next">Next tab</span></li>');
-                $navFirst = opts.showFirstLastArrows ?
-                    $('<li class="stNavFirstArrow ui-state-active" title="First">' +
-                        '<span class="ui-icon ui-icon-seek-first">First tab</span></li>') : $();
-                $navLast = opts.showFirstLastArrows ?
-                    $('<li class="stNavLastArrow ui-state-active" title="Last">' +
-                        '<span class="ui-icon ui-icon-seek-end">Last tab</span></li>') : $();
-                // Append elements to the container
-                $arrowsNav.append($navPrev, $navFirst, $navLast, $navNext);
-                $navLis = $arrowsNav.find('li').hover(function () {
-                    $(this).toggleClass('ui-state-active').toggleClass('ui-state-hover');
-                });
-            }
             /**
              * If debounce/throttle plugin is found, it debounces the event handler function
              * @param dbFunc the event handler function
@@ -105,54 +87,71 @@
             function getTabCount() {
                 return $tabs.children('ul.ui-tabs-nav > li').length;
             }
-            function _init() {
-                var _this = this;
-                // Set the height of the UL and make the LIs as absolute
-                $ul.height($lis.first().outerHeight());
-                // Add navigation buttons
-                $ul.after($arrowsNav.css('visibility', opts.showNavWhenNeeded ? 'hidden' : 'visible'));
-                // Adjust arrow position
-                if ($navLis) {
-                    $navLis.css({
-                        top: '-' + $ul.innerHeight() + 'px',
-                        height: $ul.innerHeight()
-                    });
-                    // Decide which navs in each pair will have to moved inside next to each other
-                    if (opts.nextPrevOutward) {
-                        $navPrev.addClass('ui-corner-left');
-                        $navNext.addClass('ui-corner-right');
-                        $navFirst.css('margin-left', $arrowsNav.find('li:first').outerWidth());
-                        $navLast.css('margin-right', $arrowsNav.find('li:first').outerWidth());
+            /**
+             * calculates the navigation controls width and offsets the inner tab header accordingly
+             */
+            function _offsetTabsBasedOnNavControls() {
+                var leftMargin = 0;
+                var rightMargin = 0;
+                if ($leftArrowWrapper.is(':visible')) {
+                    leftMargin = $leftArrowWrapper.outerWidth();
+                    rightMargin = $rightArrowWrapper.outerWidth();
+                }
+                $scrollDiv.css({
+                    'margin-left': leftMargin,
+                    'margin-right': rightMargin
+                });
+            }
+            /**
+             * Initializes the navigation controls based on user settings
+             */
+            function _setupNavControls() {
+                $scrollDiv = $ul.parent();
+                // Set the height of the UL
+                $scrollDiv.height($lis.first().outerHeight());
+                $leftArrowWrapper = $('<div class="stNavMain stNavMainLeft"/>');
+                $rightArrowWrapper = $('<div class="stNavMain stNavMainRight"/>');
+                if (!opts.hideDefaultArrows) {
+                    $navPrev = $('<button class="stNavPrevArrow ui-state-active" title="Previous">' +
+                        '<span class="ui-icon ui-icon-seek-prev">Previous tab</span></button>');
+                    $leftArrowWrapper.append($navPrev);
+                    $navNext = $('<button class="stNavNextArrow ui-state-active" title="Next">' +
+                        '<span class="ui-icon ui-icon-seek-next">Next tab</span></button>');
+                    $rightArrowWrapper.append($navNext);
+                    if (opts.showFirstLastArrows === true) {
+                        $navFirst = $('<button class="stNavFirstArrow ui-state-active" title="First">' +
+                            '<span class="ui-icon ui-icon-seek-first">First tab</span></button>');
+                        $leftArrowWrapper.prepend($navFirst);
+                        $navLast = $('<button class="stNavLastArrow ui-state-active" title="Last">' +
+                            '<span class="ui-icon ui-icon-seek-end">Last tab</span></button>');
+                        $rightArrowWrapper.append($navLast);
                     }
                     else {
-                        $navFirst.addClass('ui-corner-left');
-                        $navLast.addClass('ui-corner-right');
-                        // If we have first and last arrows to show, then move the arrows inward
-                        // otherwise add the css classes to make their corners round.
-                        opts.showFirstLastArrows ?
-                            $navPrev.css('margin-left', $arrowsNav.find('li:first').outerWidth()) :
-                            $navPrev.addClass('ui-corner-left');
-                        opts.showFirstLastArrows ?
-                            $navNext.css('margin-right', $arrowsNav.find('li:first').outerWidth()) :
-                            $navNext.addClass('ui-corner-right');
+                        $navFirst = $navLast = $();
                     }
                 }
+                $scrollDiv.before($leftArrowWrapper);
+                $scrollDiv.after($rightArrowWrapper);
                 // Add close buttons if required
                 _addclosebutton();
-                // See if nav needed
+            }
+            /**
+             * Initializes all the controls and events required for scroll tabs
+             */
+            function _init() {
+                var _this = this;
+                // Add nav controls
+                _setupNavControls();
+                // See if nav is needed
                 _showNavsIfNeeded();
-                // Adjust the left position of all tabs
-                _adjustLeftPosition();
                 // Add events to the navigation buttons
                 _addNavEvents();
                 // If tab is selected manually by user than also change the css class
                 $tabs.on('tabsactivate', function (event, ui) {
                     _updateCurrentTab($(ui.newTab));
-                    // if (_isHiddenOn('s')) {
-                    //   _animateTabTo('s', null, null, event);
-                    // }
-                    // else do nothing, tab is visible so no need to scroll tab
-                }).on('tabsadd', function (event, ui) {
+                    _animateTabTo(ui.newTab, null, event);
+                });
+                $tabs.on('tabsadd', function (event, ui) {
                     var $thisLi = $(ui.tab).parents('li');
                     // Update li list
                     $lis = $ul.find('li');
@@ -198,69 +197,58 @@
                     } */
                 });
                 _updateCurrentTab($tabs.find('li').eq(0));
-                $(window).on('resize', throttleEvent(_showNavsIfNeeded));
+                $(window).on('resize', debounceEvent(_showNavsIfNeeded));
             }
-            // Check if navigation need then show; otherwise hide it
+            /**
+             * Check if navigation need then show; otherwise hide it
+             */
             function _showNavsIfNeeded() {
-                if (!opts.showNavWhenNeeded) {
+                if (opts.showNavWhenNeeded === false) {
                     return; // do nothing
                 }
+                log(_liWidth() + ', ' + $scrollDiv.width());
                 // Get the width of all tabs and compare it with the width of $ul (container)
-                if (_liWidth() > $ul.width()) {
-                    $arrowsNav.css('visibility', 'visible').show();
+                if ((_liWidth() + ($leftArrowWrapper.width() * 2)) >= $scrollDiv.width()) {
+                    $leftArrowWrapper.css('visibility', 'visible').show();
+                    $rightArrowWrapper.css('visibility', 'visible').show();
                 }
                 else {
-                    $arrowsNav.css('visibility', 'hidden').hide();
+                    $leftArrowWrapper.css('visibility', 'hidden').hide();
+                    $rightArrowWrapper.css('visibility', 'hidden').hide();
                 }
+                _offsetTabsBasedOnNavControls();
             }
             function _callBackFnc(fName, event, arg1) {
                 if ($.isFunction(fName)) {
                     fName(event, arg1);
                 }
             }
-            function _isHiddenOn(side, $tab) {
+            /**
+             * returns the delta that should be added to current scroll to bring it into view
+             * @param $tab tab that should be tested
+             */
+            function _getScrollDeltaValue($tab) {
                 // If no tab is provided than take the current
                 $tab = $tab || $curSelectedTab;
-                var rightPos = $tab.position().left + $tab.outerWidth(true) + 5;
-                var leftPos = ($tab.position().left - $ul.outerWidth() - _getNavPairWidth());
-                var bHidden = false;
-                if (side === 'n') {
-                    bHidden = (rightPos > ($ul.outerWidth() - _getNavPairWidth()));
+                var leftPosition = $tab.position();
+                var width = $tab.outerWidth();
+                var currentScroll = $scrollDiv.scrollLeft();
+                var currentVisibleWidth = $scrollDiv.width();
+                var hiddenDirection = 0;
+                // Check if the new tab is in view
+                if (leftPosition.left < currentScroll) {
+                    hiddenDirection = leftPosition.left - currentScroll;
                 }
-                if (side === 'p') {
-                    bHidden = bHidden || (leftPos < 0);
+                else if (leftPosition.left + width > currentScroll + currentVisibleWidth) {
+                    hiddenDirection = (leftPosition.left + width) - (currentScroll + currentVisibleWidth);
                 }
-                return bHidden;
+                return hiddenDirection;
             }
-            function _pullMargin($tab) {
-                return -1 * (_liWidth($tab) - $ul.width() + _getNavPairWidth());
-            }
-            function _pushMargin($tab) {
-                var leftPos = ($tab[0].offsetLeft - _getNavPairWidth());
-                return (parseFloat($tab.css('margin-left')) - leftPos);
-            }
-            function _animateTabTo(side, $tab, tabIndex, e) {
+            function _animateTabTo($tab, tabIndex, e) {
                 $tab = $tab || $curSelectedTab;
-                var margin = 0;
-                switch (side) {
-                    case 'n':// Next
-                        margin = _pullMargin($tab);
-                        break;
-                    case 'p':// Previous
-                        margin = _pushMargin($tab);
-                        break;
-                    case 'f':// First
-                        margin = 0;
-                        tabIndex = 0;
-                        break;
-                    case 'l':// Last
-                        margin = _pullMargin($tab);
-                        break;
-                }
-                // log($tab);
-                $lis
-                    .animate({
-                    'margin-left': margin + 'px'
+                var calculatedDelta = _getScrollDeltaValue($tab);
+                $scrollDiv.stop().animate({
+                    scrollLeft: $scrollDiv.scrollLeft() + calculatedDelta
                 }, opts.scrollSpeed, opts.easing);
                 if (opts.selectTabAfterScroll && tabIndex !== null) {
                     $tabs.tabs('option', 'active', tabIndex);
@@ -282,7 +270,12 @@
                     e.preventDefault();
                 }
             }
-            function _addCustomerSelToCollection(col, nav) {
+            /**
+             * Return a new jQuery object for user provided selectors or else use the default ones
+             * @param col if selector is provided by user, then override the existing controls
+             * @param nav Nav control selector option prop name suffix
+             */
+            function _getCustomNavSelector(col, nav) {
                 var sel = opts['customNav' + nav] || '';
                 // Check for custom selector
                 if (typeof sel === 'string' && $.trim(sel) !== '') {
@@ -296,19 +289,19 @@
             function _addNavEvents() {
                 // Handle next tab
                 $navNext = $navNext || $();
-                $navNext = _addCustomerSelToCollection($navNext, 'Next');
+                $navNext = _getCustomNavSelector($navNext, 'Next');
                 $navNext.on('click', debounceEvent(_moveToNextTab));
                 // Handle previous tab
                 $navPrev = $navPrev || $();
-                $navPrev = _addCustomerSelToCollection($navPrev, 'Prev');
+                $navPrev = _getCustomNavSelector($navPrev, 'Prev');
                 $navPrev.on('click', debounceEvent(_moveToPrevTab));
                 // Handle First tab
                 $navFirst = $navFirst || $();
-                $navFirst = _addCustomerSelToCollection($navFirst, 'First');
+                $navFirst = _getCustomNavSelector($navFirst, 'First');
                 $navFirst.on('click', debounceEvent(_moveToFirstTab));
                 // Handle last tab
                 $navLast = $navLast || $();
-                $navLast = _addCustomerSelToCollection($navLast, 'Last');
+                $navLast = _getCustomNavSelector($navLast, 'Last');
                 $navLast.on('click', debounceEvent(_moveToLastTab));
             }
             function _moveToNextTab(e) {
@@ -318,7 +311,7 @@
                 // than we have to find the next hidden (out of viewport) tab so we can scroll to it
                 if (!opts.selectTabAfterScroll) {
                     $curSelectedTab.nextAll('li').each(function () {
-                        if (_isHiddenOn('n', $(this))) {
+                        if (_getScrollDeltaValue($(this))) {
                             $nxtLi = $(this);
                             return;
                         }
@@ -335,8 +328,8 @@
                     // get index of next element
                     var indexNextTab = $lis.index($nxtLi);
                     // check if li next to selected is in view or not
-                    if (_isHiddenOn('n', $nxtLi)) {
-                        _animateTabTo('n', $nxtLi, indexNextTab, e);
+                    if (_getScrollDeltaValue($nxtLi)) {
+                        _animateTabTo($nxtLi, indexNextTab, e);
                     }
                     else {
                         $tabs.tabs('option', 'active', indexNextTab);
@@ -351,7 +344,7 @@
                 if (!opts.selectTabAfterScroll) {
                     // Reverse the order of tabs list
                     $($lis.get().reverse()).each(function () {
-                        if (_isHiddenOn('p', $(this))) {
+                        if (_getScrollDeltaValue($(this))) {
                             $prvLi = $(this);
                             return;
                         }
@@ -367,8 +360,8 @@
                     // Get index of prev element
                     var indexPrevTab = $lis.index($prvLi);
                     // check if li previous to selected is in view or not
-                    if (_isHiddenOn('p', $prvLi)) {
-                        _animateTabTo('p', $prvLi, indexPrevTab, e);
+                    if (_getScrollDeltaValue($prvLi)) {
+                        _animateTabTo($prvLi, indexPrevTab, e);
                     }
                     else {
                         $tabs.tabs('option', 'active', indexPrevTab);
@@ -383,7 +376,7 @@
                     log('You are on first tab already');
                 }
                 else {
-                    _animateTabTo('f', $lis.first(), 0, e);
+                    _animateTabTo($lis.first(), 0, e);
                 }
             }
             function _moveToLastTab(e) {
@@ -395,7 +388,7 @@
                 }
                 else {
                     var indexLastTab = getTabCount() - 1;
-                    _animateTabTo('l', $lis.last(), indexLastTab, e);
+                    _animateTabTo($lis.last(), indexLastTab, e);
                 }
             }
             function _updateCurrentTab($li) {
@@ -404,46 +397,54 @@
                 // Add class to the current tab to which it is scrolled and updated the variable
                 $curSelectedTab = $li.addClass('stCurrentTab');
             }
+            function _liWidth($tab) {
+                var w;
+                w = 0;
+                $lis.each(function () {
+                    w += $(this).outerWidth();
+                });
+                // 20px buffer is for vertical scrollbars if any
+                return w;
+            }
             function _addclosebutton($li) {
-                if (!opts.closable) {
+                if (opts.closable === false) {
                     return;
                 }
                 // If li is provide than just add to that, otherwise add to all
                 var lis = $li || $lis;
                 lis.each(function () {
                     var $thisLi = $(this).addClass('stHasCloseBtn');
-                    $(this)
-                        .append($('<span/>')
-                        .addClass('ui-state-default ui-corner-all stCloseBtn')
-                        .hover(function () {
+                    $thisLi.append($('<span class="ui-state-default ui-corner-all stCloseBtn">' +
+                        '<span class="ui-icon ui-icon-circle-close" title="Close this tab">Close</span>' +
+                        '</span>'));
+                    $thisLi.find('.stCloseBtn').hover(function () {
                         $(this).toggleClass('ui-state-hover');
-                    })
-                        .append($('<span/>')
-                        .addClass('ui-icon ui-icon-circle-close')
-                        .html('Close')
-                        .attr('title', 'Close this tab')
-                        .click(function (e) {
-                        var removeIndex = $thisLi.prevAll('li').length;
-                        // Remove tab using UI method
-                        $tabs.tabs('remove', removeIndex);
-                        // Here $thisLi.index( $lis.index($thisLi) ) will not work as
-                        // when we remove a tab, the index will change / Better way?
-                        // If you want to add more stuff here, better add to the tabsremove
-                        // event binded in _init() method above
-                    })))
-                        .width($thisLi.outerWidth());
+                    });
+                    $thisLi.find('.ui-icon-circle-close').on('click', function (e) {
+                        removeTab($thisLi.find('a.ui-tabs-anchor'));
+                    });
                 });
             }
+            function removeTab(anc) {
+                var tabId = anc.attr('href');
+                // Remove the panel
+                $(tabId).remove();
+                // Refresh the tabs widget
+                $tabs.tabs('refresh');
+                // Remove the tab
+                anc.closest('li').remove();
+            }
             function _getNavPairWidth(single) {
-                // Check if its visible
-                if ($arrowsNav.css('visibility') === 'hidden') {
-                    return 0;
-                }
-                // If no nav than width is zero - take any of the nav say prev and
-                // multiply it with 2 IF we first/last nav are shown else with just 1 (its own width)
-                var w = opts.hideDefaultArrows ? 0 :
-                    $navPrev.outerWidth() * (opts.showFirstLastArrows ? 2 : 1);
-                return single ? w / 2 : w;
+                // // Check if its visible
+                // if ($arrowsNav.css('visibility') === 'hidden') {
+                //   return 0;
+                // }
+                // // If no nav than width is zero - take any of the nav say prev and
+                // // multiply it with 2 IF we first/last nav are shown else with just 1 (its own width)
+                // const w = opts.hideDefaultArrows ? 0 :
+                //   $navPrev.outerWidth() * (opts.showFirstLastArrows ? 2 : 1);
+                // return single ? w / 2 : w;
+                return 0;
             }
             function _adjustLeftPosition($li) {
                 // If li is provided, find the left and width of second last (last is the new tab) tab
@@ -492,21 +493,6 @@
                     // log($(this));
                 });
                 $lis.css('margin-left', leftMargin);
-            }
-            function _liWidth($tab) {
-                var w;
-                var list;
-                w = 0;
-                list = $tab ? $tab.prevAll('li').andSelf() : $lis;
-                list.each(function () {
-                    w += $(this).outerWidth() +
-                        parseInt($(this).css('margin-right'), 10);
-                    // not outerWidth(true) because margin-left is changed in previous call
-                    // so better take right margin which doesn't change in this plugin
-                });
-                var navWidth = $arrowsNav.css('visibility') === 'visible' ? _getNavPairWidth() : 0;
-                // d(navWidth);
-                return w + navWidth;
             }
             _init();
         });

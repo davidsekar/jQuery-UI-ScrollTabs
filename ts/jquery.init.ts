@@ -18,13 +18,18 @@ $(function () {
 				customNavFirst: '#f',
 				customNavLast: '#l',
         easing: 'swing',
-        enableDebug: true
+        enableDebug: true,
+        closable: true,
+        showFirstLastArrows: false
 			});
 	} else {
 		//example
 		$tabs = $('#example_1')
 			.tabs();
-	}
+  }
+
+  $tabs = $('#example_2')
+			.tabs();
 
 	//Add new tab
 	$('#addTab_1').click(function () {
