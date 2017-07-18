@@ -57,7 +57,7 @@ gulp.task('watch', ['scss', 'ts'], function (done) {
 
   // add browserSync.reload to the tasks array to make
   // all browsers reload after tasks are complete.
-  gulp.watch(paths.ts, ['ts-watch'], );
+  gulp.watch(paths.ts, ['ts-watch']);
   gulp.watch(paths.scss, ['scss-watch']);
   gulp.watch(paths.html, ['html-watch']);
 });
