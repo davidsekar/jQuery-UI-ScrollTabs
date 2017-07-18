@@ -1,5 +1,14 @@
+language:
+  - "javascript"
+group:
+  - "stable",
+dist:
+  - "precise",
+os:
+  - "linux"
 node_js:
   - "8"
 before_script:
   - npm install -g gulp-cli
+  - npm install
 script: gulp
