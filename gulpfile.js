@@ -7,7 +7,7 @@ var tsProject = typeScript.createProject("tsconfig.json");
 
 
 var paths = {
-  html: ['index.html'],
+  html: ['demo.html'],
   scss: ['scss/**/*.scss'],
   ts: ['ts/**/*.ts'],
 };
