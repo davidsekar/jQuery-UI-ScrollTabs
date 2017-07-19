@@ -21,7 +21,8 @@
     "start": "npm run clean && gulp watch",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npm run clean && gulp",
-    "clean": "gulp clean"
+    "clean": "gulp clean",
+    "deploy-files": "npm run clean && gulp deploy-files"
   },
   "author": "",
   "license": "ISC"

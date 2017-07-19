@@ -62,6 +62,13 @@ gulp.task('clean', function () {
   });
 });
 
+gulp.task('github-pages', function () {
+  return gulp.src(['index.md', '_config.yml', 'docs/**/*'], {
+      base: '.'
+    })
+    .pipe(gulp.dest(dest.root));
+});
+
 // create a task that ensures the `js` task is complete before
 // reloading browsers
 gulp.task('watch', ['copy-dependency', 'html', 'scss', 'ts'], function (done) {
@@ -81,6 +88,8 @@ gulp.task('watch', ['copy-dependency', 'html', 'scss', 'ts'], function (done) {
   gulp.watch(paths.scss, ['scss-watch']);
   gulp.watch(paths.html, ['html-watch']);
 });
+
+gulp.task('deploy-files', ['copy-dependency', 'scss', 'ts', 'html', 'github-pages'])
 
 // use default task to launch Browsersync and watch JS files
 gulp.task('default', ['copy-dependency', 'scss', 'ts', 'html']);

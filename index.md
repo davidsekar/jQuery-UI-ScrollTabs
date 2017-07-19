@@ -12,4 +12,4 @@ The project uses
 - jQuery types (@types/jquery)
 - Vscode tasks and debug setting preconfigured
 
-You can view the live demo [here](dist/index.html)
+You can view the live demo [here](demo.html)
