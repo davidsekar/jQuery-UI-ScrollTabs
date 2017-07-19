@@ -202,6 +202,7 @@
        * Initializes all the controls and events required for scroll tabs
        */
       function _init() {
+        _updateCurrentTab($tabs.find('li').eq(0));
         // Add nav controls
         _setupNavControls();
         // See if nav is needed
@@ -212,6 +213,7 @@
         // If tab is selected manually by user than also change the css class
         $tabs.on('tabsactivate', (event, ui) => {
           _updateCurrentTab($(ui.newTab));
+          _showNavsIfNeeded();
           _animateTabTo(ui.newTab, null, event);
         });
 
@@ -260,7 +262,6 @@
             $lis.css('margin-left',m)
           } */
         });
-        _updateCurrentTab($tabs.find('li').eq(0));
 
         $(window).on('resize', debounceEvent(_showNavsIfNeeded));
       }
@@ -282,6 +283,15 @@
           $leftArrowWrapper.css('visibility', 'hidden').hide();
           $rightArrowWrapper.css('visibility', 'hidden').hide();
         }
+
+        const currentTabIndex = $lis.index($curSelectedTab);
+
+        if (currentTabIndex === 0) {
+          $leftArrowWrapper.css('visibility', 'hidden').hide();
+        } else if (currentTabIndex + 1 === getTabCount()) {
+          $rightArrowWrapper.css('visibility', 'hidden').hide();
+        }
+
         _offsetTabsBasedOnNavControls();
       }
 
