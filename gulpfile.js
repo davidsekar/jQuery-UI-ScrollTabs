@@ -78,7 +78,8 @@ gulp.task('watch', ['copy-dependency', 'html', 'scss', 'ts'], function (done) {
       port: 8080
     },
     server: {
-      baseDir: "./dist"
+      baseDir: "./dist",
+      index: "demo.html"
     }
   });
 
