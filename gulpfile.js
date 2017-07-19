@@ -53,7 +53,7 @@ gulp.task('copy-dependency', function () {
   return gulp.src(paths.deps, {
       base: './deps'
     })
-    .pipe(gulp.dest(dest.root,));
+    .pipe(gulp.dest(dest.root));
 });
 
 gulp.task('clean', function () {
