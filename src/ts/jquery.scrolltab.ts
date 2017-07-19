@@ -91,11 +91,15 @@
         }
       }
 
+      function getTabList() {
+        return $ul.find('li');
+      }
+
       /**
        * Returns number of tabs in $tabs widget
        */
       function getTabCount(): number {
-        return $tabs.children('ul.ui-tabs-nav > li').length;
+        return $ul.children('li').length;
       }
 
       /**
@@ -112,6 +116,43 @@
         $scrollDiv.css({
           'margin-left': leftMargin,
           'margin-right': rightMargin
+        });
+      }
+      function scrollTabHeader(distance: number, duration: number) {
+        if (distance < 0) {
+          distance = 0;
+        }
+
+        $scrollDiv.animate({ scrollLeft: distance }, duration, 'linear');
+      }
+
+      function _bindTouchEvents() {
+        if (!$.fn.swipe) {
+          return;
+        }
+        $scrollDiv.swipe({
+          threshold: 75,
+          triggerOnTouchEnd: true,
+          allowPageScroll: 'vertical',
+          swipeStatus: (event: any, phase: any, direction: any, distance: any) => {
+            // If we are moving before swipe, and we are going
+            // L or R in X mode, or U or D in Y mode then drag.
+            if (phase === 'move' && (direction === 'left' || direction === 'right')) {
+              const currentScrollLeft = $scrollDiv.scrollLeft();
+              const duration = 0;
+              const distanceWithResistance = distance / 15;
+              if (direction === 'left') {
+                scrollTabHeader(currentScrollLeft + distanceWithResistance, duration);
+              } else if (direction === 'right') {
+                scrollTabHeader(currentScrollLeft - distanceWithResistance, duration);
+              }
+            } else if (phase === 'cancel') {
+              const currentScrollLeft = $scrollDiv.scrollLeft();
+              scrollTabHeader(currentScrollLeft, opts.scrollSpeed);
+            } else if (phase === 'end') {
+              // to be added
+            }
+          }
         });
       }
 
@@ -153,6 +194,8 @@
 
         // Add close buttons if required
         _addclosebutton();
+
+        _bindTouchEvents();
       }
 
       /**
@@ -471,7 +514,27 @@
           });
 
           $thisLi.find('.ui-icon-circle-close').on('click', (e) => {
+            const active = $lis.index($curSelectedTab);
+            const removeIdx = $lis.index($thisLi);
+            let selectTabIdx: number;
+            selectTabIdx = -1;
+
+            if (active === removeIdx) {
+              const tabcount = getTabCount();
+              const mid = Math.ceil(tabcount / 2);
+              if (removeIdx > mid) {
+                selectTabIdx = removeIdx - 1;
+              } else {
+                selectTabIdx = removeIdx;
+              }
+            }
+
             removeTab($thisLi.find('a.ui-tabs-anchor'));
+
+            if (selectTabIdx > -1 && selectTabIdx !== removeIdx) {
+              $tabs.tabs('option', 'active', selectTabIdx);
+            }
+            $lis = getTabList();
           });
         });
       }
@@ -480,10 +543,10 @@
         const tabId = anc.attr('href');
         // Remove the panel
         $(tabId).remove();
-        // Refresh the tabs widget
-        $tabs.tabs('refresh');
         // Remove the tab
         anc.closest('li').remove();
+        // Refresh the tabs widget
+        $tabs.tabs('refresh');
       }
 
       function _getNavPairWidth(single?: number): number {
