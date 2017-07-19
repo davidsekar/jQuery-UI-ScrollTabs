@@ -3,7 +3,7 @@
     "node_modules/*"
   ],
   "include": [
-    "ts/**/*"
+    "src/ts/**/*"
   ],
   "compilerOptions": {
     "noImplicitAny": true,

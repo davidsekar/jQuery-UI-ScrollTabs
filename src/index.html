@@ -7,12 +7,12 @@
   <meta name="keywords" content="jquery, tabs, scrollable, scroll">
 
   <title>jQuery UI scrollable tabs</title>
-  <link type="text/css" href="css/ui-lightness/jquery.ui.all.css" rel="stylesheet" />
+  <link type="text/css" href="/css/ui-lightness/jquery.ui.all.css" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" type="text/css">
-  <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
-  <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
-  <script type="text/javascript" src="js/jquery.ba-throttle-debounce.min.js"></script>
-  <script type="text/javascript" src="js/jquery-ui-1.11.4.min.js"></script>
+  <script type="text/javascript" src="/js/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="/js/jquery-migrate-1.2.1.min.js"></script>
+  <script type="text/javascript" src="/js/jquery.ba-throttle-debounce.min.js"></script>
+  <script type="text/javascript" src="/js/jquery-ui-1.11.4.min.js"></script>
   <script type="text/javascript" src="js/jquery.scrolltab.js"></script>
   <script type="text/javascript" src="js/jquery.init.js"></script>
 </head>
@@ -77,7 +77,7 @@
   <a class="ui-state-default ui-corner-all" id="l" href="#" style="padding:20px;text-decoration:none;position:relative"> Last </a>
 
   <br /><br /><br /><br />
-<div id="example_2">
+  <div id="example_2">
     <div class="tabHeaderWraper">
       <div class="inner_scroll">
         <ul role="tablist">
@@ -121,29 +121,6 @@
       purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
       in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
   </div>
-
-  <div>
-    <div style="margin:20px 0;float:left">
-      <a class="ui-state-default ui-corner-all" id="addTab_1" href="#" style="padding:6px 6px 6px 17px;text-decoration:none;position:relative">
-				<span class="ui-icon ui-icon-plus" style="position:absolute;top:4px;left:1px"></span>
-				Add new tab using <span class="myCode ui-state-active">$tabs.trigger('addTab', [label,content])</span>
-			</a>
-    </div>
-    <div style="margin:20px 0 20px 8px;float:left;">
-      <a class="ui-state-default ui-corner-all" id="addUiTab" href="#" style="padding:6px 6px 6px 17px;text-decoration:none;position:relative">
-				<span class="ui-icon ui-icon-plus" style="position:absolute;top:4px;left:1px"></span>
-				Add new tab using <span class="myCode ui-state-active">$tabs.tabs('add','#'+tabid,label)</span>
-			</a>
-    </div>
-    <div style="clear:both;margin:20px 0;">
-      <a class="ui-state-default ui-corner-all" id="removeTab" href="#" style="padding:6px 6px 6px 17px;text-decoration:none;position:relative">
-				<span class="ui-icon ui-icon-plus" style="position:absolute;top:4px;left:1px"></span>
-				Remove last tab using <span class="myCode ui-state-active">$tabs.tabs('remove',$tabs.tabs('length')-1)</span>
-			</a>
-    </div>
-    <div style="clear:both"></div>
-  </div>
-
 </body>
 
 </html>
