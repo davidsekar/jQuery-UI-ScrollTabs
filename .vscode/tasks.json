@@ -3,19 +3,33 @@
   // for the documentation about the tasks.json format
   "version": "2.0.0",
   "tasks": [{
-      "type": "gulp",
-      "task": "default",
-      "problemMatcher": []
-    },
-    {
-      "type": "gulp",
-      "task": "watch",
-      "problemMatcher": []
-    },
-    {
+      "label": "Rebuild",
       "type": "npm",
-      "script": "debug",
-      "problemMatcher": []
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "script": "build",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "live-server",
+      "type": "npm",
+      "group": "none",
+      "script": "start",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated"
+      }
     }
   ]
 }

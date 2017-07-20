@@ -8,8 +8,10 @@
   "compilerOptions": {
     "noImplicitAny": true,
     "target": "es5",
-    "sourceMap":true,
-    "typeRoots": [
-    ]
+    "sourceMap": true,
+    "sourceRoot": "./src",
+    "typeRoots": [],
+    "rootDir": "./src/ts",
+    "outDir": "./dist/js"
   }
 }

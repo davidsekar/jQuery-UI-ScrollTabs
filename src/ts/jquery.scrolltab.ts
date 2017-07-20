@@ -45,6 +45,13 @@
       let $navLast: JQuery<HTMLElement>;
       const eventDelay: number = 100;
 
+      const navigateOptions = {
+        previous: 1,
+        next: 2,
+        first: 3,
+        last: 4
+      };
+
       opts = $.extend({}, settings, typeof options === 'object' ? options : {});
 
       const isDebouncePluginFound = $.debounce ? true : false;
@@ -106,23 +113,27 @@
        * calculates the navigation controls width and offsets the inner tab header accordingly
        */
       function _offsetTabsBasedOnNavControls() {
-        let leftMargin: number = 0;
-        let rightMargin: number = 0;
+        const leftCtrlVisible: boolean = $leftArrowWrapper.is(':visible');
+        const rightCtrlVisible: boolean = $rightArrowWrapper.is(':visible');
+        const props: any = {
+          'margin-left': 0,
+          'margin-right': 0
+        };
 
-        if ($leftArrowWrapper.is(':visible')) {
-          leftMargin = $leftArrowWrapper.outerWidth();
-          rightMargin = $rightArrowWrapper.outerWidth();
+        if (leftCtrlVisible) {
+          props['margin-left'] = $leftArrowWrapper.outerWidth();
         }
-        $scrollDiv.css({
-          'margin-left': leftMargin,
-          'margin-right': rightMargin
-        });
+        if (rightCtrlVisible) {
+          props['margin-right'] = $rightArrowWrapper.outerWidth();
+        }
+
+        $scrollDiv.css(props);
       }
+
       function scrollTabHeader(distance: number, duration: number) {
         if (distance < 0) {
           distance = 0;
         }
-
         $scrollDiv.animate({ scrollLeft: distance }, duration, 'linear');
       }
 
@@ -275,22 +286,36 @@
         }
         log(_liWidth() + ', ' + $scrollDiv.width());
 
-        // Get the width of all tabs and compare it with the width of $ul (container)
-        if ((_liWidth() + ($leftArrowWrapper.width() * 2)) >= $scrollDiv.width()) {
-          $leftArrowWrapper.css('visibility', 'visible').show();
-          $rightArrowWrapper.css('visibility', 'visible').show();
-        } else {
-          $leftArrowWrapper.css('visibility', 'hidden').hide();
-          $rightArrowWrapper.css('visibility', 'hidden').hide();
-        }
+        let showLeft = !($scrollDiv.scrollLeft() <= 0);
+        let showRight = !(Math.abs($scrollDiv[0].scrollWidth - $scrollDiv.scrollLeft()
+          - $scrollDiv.outerWidth()) < 1);
 
-        const currentTabIndex = $lis.index($curSelectedTab);
-
-        if (currentTabIndex === 0) {
-          $leftArrowWrapper.css('visibility', 'hidden').hide();
-        } else if (currentTabIndex + 1 === getTabCount()) {
-          $rightArrowWrapper.css('visibility', 'hidden').hide();
+        if (opts.selectTabAfterScroll) {
+          // Calculate based on the selected tab index
+          const currentTabIndex = $lis.index($curSelectedTab);
+          showLeft = !(currentTabIndex === 0);
+          if (currentTabIndex + 1 === getTabCount()) {
+            showRight = false;
+          }
         }
+        // else {
+
+
+
+        // showLeft = (_liWidth() + ($leftArrowWrapper.width() * 2)) >= $scrollDiv.width()
+
+        // // Get the width of all tabs and compare it with the width of $ul (container)
+        // if ((_liWidth() + ($leftArrowWrapper.width() * 2)) < $scrollDiv.width()) {
+        //   $leftArrowWrapper.css('visibility', 'visible').show();
+        //   $rightArrowWrapper.css('visibility', 'visible').show();
+        // }
+        // }
+
+        showLeft ? $leftArrowWrapper.css('visibility', 'visible').show()
+          : $leftArrowWrapper.css('visibility', 'hidden').hide();
+
+        showRight ? $rightArrowWrapper.css('visibility', 'visible').show()
+          : $rightArrowWrapper.css('visibility', 'hidden').hide();
 
         _offsetTabsBasedOnNavControls();
       }
@@ -329,6 +354,32 @@
         }
 
         return hiddenDirection;
+      }
+
+      function _scrollWithoutSelection(navOpt: number) {
+        let scrollLeft = $scrollDiv.scrollLeft();
+
+        switch (navOpt) {
+          case navigateOptions.first:
+            scrollLeft = 0;
+            break;
+          case navigateOptions.last:
+            scrollLeft = _liWidth();
+            break;
+          case navigateOptions.previous:
+            scrollLeft -= $scrollDiv.outerWidth() / 2;
+            break;
+          case navigateOptions.next:
+            scrollLeft += $scrollDiv.outerWidth() / 2;
+            break;
+        }
+
+        if (scrollLeft < 0) {
+          scrollLeft = 0;
+        }
+        $scrollDiv.stop().animate({
+          scrollLeft
+        }, opts.scrollSpeed, opts.easing, _showNavsIfNeeded);
       }
 
       function _animateTabTo($tab: JQuery<HTMLElement>, tabIndex: number, e?: JQuery.Event) {
@@ -406,16 +457,12 @@
         let $nxtLi = $();
         // First check if user do not want to select tab on Next
         // than we have to find the next hidden (out of viewport) tab so we can scroll to it
-        if (!opts.selectTabAfterScroll) {
-          $curSelectedTab.nextAll('li').each(function () {
-            if (_getScrollDeltaValue($(this))) {
-              $nxtLi = $(this);
-              return;
-            }
-          });
-        } else {
-          $nxtLi = $curSelectedTab.next('li');
+        if (opts.selectTabAfterScroll === false) {
+          _scrollWithoutSelection(navigateOptions.next);
+          return;
         }
+
+        $nxtLi = $curSelectedTab.next('li');
 
         // check if there is no next tab
         if ($nxtLi.length === 0) {
@@ -439,17 +486,12 @@
         let $prvLi = $();
         // First check if user do not want to select tab on Prev
         // than we have to find the prev hidden (out of viewport) tab so we can scroll to it
-        if (!opts.selectTabAfterScroll) {
-          // Reverse the order of tabs list
-          $($lis.get().reverse()).each(function () {
-            if (_getScrollDeltaValue($(this))) {
-              $prvLi = $(this);
-              return;
-            }
-          });
-        } else {
-          $prvLi = $curSelectedTab.prev('li');
+        if (opts.selectTabAfterScroll === false) {
+          _scrollWithoutSelection(navigateOptions.previous);
+          return;
         }
+
+        $prvLi = $curSelectedTab.prev('li');
 
         if ($prvLi.length === 0) {
           log('There is no previous tab. NO PREV TAB');
@@ -467,9 +509,13 @@
       }
 
       function _moveToFirstTab(e?: JQuery.Event) {
-        if (e) {
-          e.preventDefault();
+        e.preventDefault();
+
+        if (!opts.selectTabAfterScroll) {
+          _scrollWithoutSelection(navigateOptions.first);
+          return;
         }
+
         if ($lis.index($curSelectedTab) === 0) {
           log('You are on first tab already');
         } else {
@@ -479,10 +525,15 @@
 
       function _moveToLastTab(e: JQuery.Event) {
         e.preventDefault();
+
+        if (!opts.selectTabAfterScroll) {
+          _scrollWithoutSelection(navigateOptions.last);
+          return;
+        }
+
         const $lstLi = $curSelectedTab.next('li');
         if ($lstLi.length === 0) {
           log('You are already on the last tab. there is no more last tab.');
-          return;
         } else {
           const indexLastTab = getTabCount() - 1;
           _animateTabTo($lis.last(), indexLastTab, e);

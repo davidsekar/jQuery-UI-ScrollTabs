@@ -34,12 +34,12 @@ var banner = ['/*! <%= pkg.name %>',
 
 gulp.task('ts', function () {
   return tsProject.src()
-    // .pipe(sourcemaps.init())
+    .pipe(sourcemaps.init())
     .pipe(tsProject()).js
     .pipe(header(banner, {
       pkg: pkg
     }))
-    // .pipe(sourcemaps.write('./'))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(dest.js));
 });
 

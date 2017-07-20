@@ -1,21 +1,21 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceRoot}",
-            "sourceMaps": true
-        },
-        {
-            "type": "chrome",
-            "request": "attach",
-            "name": "Attach to Chrome",
-            "port": 9222,
-            "webRoot": "${workspaceRoot}",
-            "sourceMaps": true
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [{
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:3000/",
+      "webRoot": "${workspaceRoot}/dist",
+      "sourceMaps": true
+    },
+    {
+      "type": "chrome",
+      "request": "attach",
+      "name": "Attach to Chrome",
+      "url": "http://localhost:3000/",
+      "port": 9222,
+      "webRoot": "${workspaceRoot}/dist",
+      "sourceMaps": true
+    }
+  ]
 }

@@ -20,7 +20,8 @@ $(() => {
         easing: 'swing',
         enableDebug: true,
         closable: true,
-        showFirstLastArrows: false
+        showFirstLastArrows: false,
+        selectTabAfterScroll: false
       });
   } else {
     // example
