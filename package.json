@@ -1,7 +1,7 @@
 {
-  "name": "scroll-tabs",
+  "name": "jquery-ui-scrolltab",
   "version": "1.0.0",
-  "description": "",
+  "description": "jQuery plugin to extend jQuery UI tabs functionality with scrollable tabs. It supports responsive layouts.",
   "main": "index.js",
   "dependencies": {
     "@types/jquery": "^3.2.8",
@@ -10,6 +10,7 @@
   "devDependencies": {
     "browser-sync": "^2.18.12",
     "gulp": "^3.9.1",
+    "gulp-header": "^1.8.9",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-typescript": "^3.2.0",
@@ -24,6 +25,7 @@
     "clean": "gulp clean",
     "deploy-files": "npm run clean && gulp deploy-files"
   },
-  "author": "",
-  "license": "ISC"
+  "homepage": "https://davidsekar.github.io/jQuery-UI-ScrollTab/",
+  "author": "David Gnasekaran",
+  "license": "MIT"
 }

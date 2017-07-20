@@ -5,6 +5,7 @@ var typeScript = require('gulp-typescript');
 var sourcemaps = require('gulp-sourcemaps');
 var tsProject = typeScript.createProject("tsconfig.json");
 var rimraf = require('rimraf');
+var header = require('gulp-header');
 
 var paths = {
   deps: ['deps/js/**/*.js', 'deps/css/**/*'],
@@ -23,11 +24,21 @@ function refreshBrowserSync(done) {
   browserSync.reload();
   done();
 }
+// using data from package.json
+var pkg = require('./package.json');
+var banner = ['/*! <%= pkg.name %>',
+  ' * v<%= pkg.version %>',
+  ' * <%= pkg.homepage %>',
+  ' * @license <%= pkg.license %> */\n'
+].join(' | ');
 
 gulp.task('ts', function () {
   return tsProject.src()
     // .pipe(sourcemaps.init())
     .pipe(tsProject()).js
+    .pipe(header(banner, {
+      pkg: pkg
+    }))
     // .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(dest.js));
 });
