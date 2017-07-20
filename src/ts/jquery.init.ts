@@ -19,7 +19,7 @@ $(() => {
         customNavLast: '#l',
         easing: 'swing',
         enableDebug: true,
-        closable: false,
+        closable: true,
         showFirstLastArrows: false
       });
   } else {

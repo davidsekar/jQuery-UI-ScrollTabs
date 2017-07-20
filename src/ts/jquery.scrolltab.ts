@@ -521,9 +521,7 @@
 
           $thisLi.find('.stCloseBtn').hover(function () {
             $(this).toggleClass('ui-state-hover');
-          });
-
-          $thisLi.find('.ui-icon-circle-close').on('click', (e) => {
+          }).on('click', (e) => {
             const active = $lis.index($curSelectedTab);
             const removeIdx = $lis.index($thisLi);
             let selectTabIdx: number;

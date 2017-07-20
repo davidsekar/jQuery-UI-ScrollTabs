@@ -1,19 +1,13 @@
-body {
-  font-size: 11px;
-  font-family: "Helvetica Neue", HelveticaNeue, Helvetica, sans-serif;
-  margin: 0;
-}
-
-p {
-  font-size: 13px
-}
-
-h2 {
-  font-size: 16px;
+%clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 }
 
 
-/*CSS only for scrollable tabs*/
+/* Scroll tab default css*/
 
 .stMainWrapper {
   .tabHeaderWraper {
@@ -23,41 +17,39 @@ h2 {
     @extend %clearfix;
     .inner_scroll {
       overflow: hidden;
-
     }
     .ui-widget-header {
       background: none;
       border: none;
     }
-    .stNavMainLeft {
-      position: absolute;
-      left: 0;
-      top:0;
+  }
+  .stNavMain {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    button {
+      height: 100%;
     }
-    .stNavMainRight {
-      position: absolute;
-      right: 0;
-      top:0;
-    }
+  }
+  .stNavMainLeft {
+    left: 0;
+  }
+  .stNavMainRight {
+    right: 0;
   }
   ul.ui-tabs-nav {
     position: relative;
     white-space: nowrap;
     li {
+      // 'no-wrap' will work only if li acts as an inline element
       display: inline-block;
-      float: none; // position: absolute;
-      /*do not set 'left' should be done in the plugin after some calculations*/
-      // top: 3px;
+      float: none;
       &.stHasCloseBtn a {
-        padding-right: 5px;
-      }
-      &.stFirstTab {
-        margin-right: 3px;
+        padding-right: 0.5em;
       }
       span.stCloseBtn {
         float: left;
-        margin-top: 6px;
-        margin-right: 4px;
+        padding: 4px 2px;
         border: none;
         cursor: pointer;
       }
@@ -65,41 +57,5 @@ h2 {
   }
 }
 
-%clearfix {
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-}
 
-.stNavMain {
-  list-style: none;
-  margin: 0 !important;
-  padding: 0 1px 0 1px !important;
-  position: relative;
-  border: none !important;
-  height: 100%;
-  button {
-    width: 16px;
-    height: 100%;
-    border-top: none !important;
-    border-bottom: none !important; // margin-top: -1px;
-    padding: 0; // .ui-icon {
-    // margin-top: 38%;
-    // }
-    // &.stNavNextArrow,
-    // &.stNavLastArrow {
-    //   float: right;
-    //   border-right: none !important;
-    // }
-    // &.stNavPrevArrow,
-    // &.stNavFirstArrow {
-    //   float: left;
-    //   border-left: none !important;
-    // }
-  }
-}
-
-
-/*End of scrollable tabs css*/
+/*End of scrolltabs css*/
