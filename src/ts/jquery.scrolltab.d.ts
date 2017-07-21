@@ -1,7 +1,31 @@
 interface JQuery<TElement extends Node = HTMLElement> {
   scrollabletabs: (options: ScrollTabOptions) => JQuery<HTMLElement>;
-  swipe: (options: any) => JQuery<HTMLElement>;
+  swipe: JQuerySwipe<HTMLElement>;
 }
+
+interface SwipePhases {
+  PHASE_START: string,
+  PHASE_MOVE: string,
+  PHASE_END: string,
+  PHASE_CANCEL: string
+}
+
+interface SwipeDirections {
+  LEFT: string,
+  RIGHT: string,
+  UP: string,
+  DOWN: string,
+  IN: string,
+  OUT: string
+}
+
+interface JQuerySwipe<TElement extends Node = HTMLElement> {
+  (options: any): JQuery<HTMLElement>;
+  directions: SwipeDirections;
+  phases: SwipePhases;
+  [n: number]: TElement;
+}
+
 interface JQueryStatic<TElement extends Node = HTMLElement> {
   debounce: (delay: number, at_begin: any, callback?: any) => any;
   throttle: (delay: number, at_begin: any, callback?: any) => any;
