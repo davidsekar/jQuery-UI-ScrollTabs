@@ -113,7 +113,7 @@
         if (distance < 0) {
           distance = 0;
         }
-        $scrollDiv.animate({ scrollLeft: distance }, duration, 'linear');
+        $scrollDiv.animate({ scrollLeft: distance }, duration, opts.easing);
       }
 
       function _bindTouchEvents() {
@@ -127,20 +127,26 @@
           swipeStatus: (event: any, phase: any, direction: any, distance: any) => {
             // If we are moving before swipe, and we are going
             // L or R in X mode, or U or D in Y mode then drag.
-            if (phase === 'move' && (direction === 'left' || direction === 'right')) {
+            if (phase === $.fn.swipe.phases.PHASE_MOVE
+              && (direction === $.fn.swipe.directions.LEFT
+                || direction === $.fn.swipe.directions.RIGHT)) {
+
               const currentScrollLeft = $scrollDiv.scrollLeft();
               const duration = 0;
               const distanceWithResistance = distance / 15;
-              if (direction === 'left') {
+              if (direction === $.fn.swipe.directions.LEFT) {
                 scrollTabHeader(currentScrollLeft + distanceWithResistance, duration);
-              } else if (direction === 'right') {
+              } else if (direction === $.fn.swipe.directions.RIGHT) {
                 scrollTabHeader(currentScrollLeft - distanceWithResistance, duration);
               }
-            } else if (phase === 'cancel') {
-              const currentScrollLeft = $scrollDiv.scrollLeft();
-              scrollTabHeader(currentScrollLeft, opts.scrollSpeed);
-            } else if (phase === 'end') {
+            } else if (phase === $.fn.swipe.phases.PHASE_CANCEL) {
+              // const currentScrollLeft = $scrollDiv.scrollLeft();
+              // scrollTabHeader(currentScrollLeft, opts.scrollSpeed);
+              // Don't animate for current swipe, as it is canceled
+              _showNavsIfNeeded();
+            } else if (phase === $.fn.swipe.phases.PHASE_END) {
               // to be added
+              _showNavsIfNeeded();
             }
           }
         });

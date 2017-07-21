@@ -23,42 +23,42 @@
       background: none;
       border: none;
     }
-  }
-  .stNavMain {
-    position: absolute;
-    top: 0;
-    z-index: 2;
-    height: 100%;
-    opacity: 0;
-    transition: opacity .5s swing;
-    button {
+    .stNavMain {
+      position: absolute;
+      top: 0;
+      z-index: 2;
       height: 100%;
-    }
-  }
-  .stNavVisible{
-    opacity: 1;
-  }
-  .stNavMainLeft {
-    left: 0;
-  }
-  .stNavMainRight {
-    right: 0;
-  }
-  ul.ui-tabs-nav {
-    position: relative;
-    white-space: nowrap;
-    li {
-      // 'no-wrap' will work only if li acts as an inline element
-      display: inline-block;
-      float: none;
-      &.stHasCloseBtn a {
-        padding-right: 0.5em;
+      opacity: 0;
+      transition: opacity .5s swing;
+      button {
+        height: 100%;
       }
-      span.stCloseBtn {
-        float: left;
-        padding: 4px 2px;
-        border: none;
-        cursor: pointer;
+    }
+    .stNavVisible {
+      opacity: 1;
+    }
+    .stNavMainLeft {
+      left: 0;
+    }
+    .stNavMainRight {
+      right: 0;
+    }
+    ul.ui-tabs-nav {
+      position: relative;
+      white-space: nowrap;
+      li {
+        // 'no-wrap' will work only if li acts as an inline element
+        display: inline-block;
+        float: none;
+        &.stHasCloseBtn a {
+          padding-right: 0.5em;
+        }
+        span.stCloseBtn {
+          float: left;
+          padding: 4px 2px;
+          border: none;
+          cursor: pointer;
+        }
       }
     }
   }
