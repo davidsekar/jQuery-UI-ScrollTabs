@@ -109,27 +109,6 @@
         return $ul.children('li').length;
       }
 
-      /**
-       * calculates the navigation controls width and offsets the inner tab header accordingly
-       */
-      function _offsetTabsBasedOnNavControls() {
-        const leftCtrlVisible: boolean = $leftArrowWrapper.is(':visible');
-        const rightCtrlVisible: boolean = $rightArrowWrapper.is(':visible');
-        const props: any = {
-          'margin-left': 0,
-          'margin-right': 0
-        };
-
-        if (leftCtrlVisible) {
-          props['margin-left'] = $leftArrowWrapper.outerWidth();
-        }
-        if (rightCtrlVisible) {
-          props['margin-right'] = $rightArrowWrapper.outerWidth();
-        }
-
-        $scrollDiv.css(props);
-      }
-
       function scrollTabHeader(distance: number, duration: number) {
         if (distance < 0) {
           distance = 0;
@@ -294,14 +273,9 @@
           // Calculate based on the selected tab index
           const currentTabIndex = $lis.index($curSelectedTab);
           showLeft = !(currentTabIndex === 0);
-          if (currentTabIndex + 1 === getTabCount()) {
-            showRight = false;
-          }
+          showRight = (currentTabIndex + 1 === getTabCount()) ? false : true;
         }
         // else {
-
-
-
         // showLeft = (_liWidth() + ($leftArrowWrapper.width() * 2)) >= $scrollDiv.width()
 
         // // Get the width of all tabs and compare it with the width of $ul (container)
@@ -311,13 +285,11 @@
         // }
         // }
 
-        showLeft ? $leftArrowWrapper.css('visibility', 'visible').show()
-          : $leftArrowWrapper.css('visibility', 'hidden').hide();
+        showLeft ? $leftArrowWrapper.addClass('stNavVisible')
+          : $leftArrowWrapper.removeClass('stNavVisible');
 
-        showRight ? $rightArrowWrapper.css('visibility', 'visible').show()
-          : $rightArrowWrapper.css('visibility', 'hidden').hide();
-
-        _offsetTabsBasedOnNavControls();
+        showRight ? $rightArrowWrapper.addClass('stNavVisible')
+          : $rightArrowWrapper.removeClass('stNavVisible');
       }
 
       function _callBackFnc(
@@ -345,12 +317,14 @@
         const currentVisibleWidth = $scrollDiv.width();
 
         let hiddenDirection = 0;
+        const arrowsWidth = $leftArrowWrapper.width();
 
         // Check if the new tab is in view
         if (leftPosition.left < currentScroll) {
-          hiddenDirection = leftPosition.left - currentScroll;
-        } else if (leftPosition.left + width > currentScroll + currentVisibleWidth) {
-          hiddenDirection = (leftPosition.left + width) - (currentScroll + currentVisibleWidth);
+          hiddenDirection = leftPosition.left - currentScroll - arrowsWidth;
+        } else if (leftPosition.left + width + arrowsWidth > currentScroll + currentVisibleWidth) {
+          hiddenDirection = (leftPosition.left + width + arrowsWidth)
+            - (currentScroll + currentVisibleWidth);
         }
 
         return hiddenDirection;

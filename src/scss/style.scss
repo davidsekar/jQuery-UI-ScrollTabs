@@ -16,6 +16,7 @@
     background: #f6a828;
     @extend %clearfix;
     .inner_scroll {
+      z-index: 1;
       overflow: hidden;
     }
     .ui-widget-header {
@@ -26,10 +27,16 @@
   .stNavMain {
     position: absolute;
     top: 0;
+    z-index: 2;
     height: 100%;
+    opacity: 0;
+    transition: opacity .5s swing;
     button {
       height: 100%;
     }
+  }
+  .stNavVisible{
+    opacity: 1;
   }
   .stNavMainLeft {
     left: 0;
