@@ -1,6 +1,6 @@
 /// <reference path="../../node_modules/@types/jquery/index.d.ts" />
 /// <reference path="../../node_modules/@types/jqueryui/index.d.ts" />
-/// <reference path="../ts/jquery.scrolltab.d.ts" />
+/// <reference path="../ts/jquery.ui.scrolltabs.d.ts" />
 let $tabs: JQuery<HTMLElement>;
 let scrollEnabled: any;
 
@@ -9,28 +9,44 @@ $(() => {
   const keywords = ['Just a tab label', 'Long string', 'Short',
     'Very very long string', 'tab', 'New tab', 'This is a new tab'];
 
+  $('#example_0').scrollTabs({
+    scrollOptions: {
+      enableDebug: true,
+      selectTabAfterScroll: false
+    }
+  });
+
   if (scrollEnabled) {
     $tabs = $('#example_1')
-      .tabs()
-      .scrollabletabs({
-        customNavNext: '#n',
-        customNavPrev: '#p',
-        customNavFirst: '#f',
-        customNavLast: '#l',
+      .scrollTabs({
+        scrollOptions: {
+          customNavNext: '#n',
+          customNavPrev: '#p',
+          customNavFirst: '#f',
+          customNavLast: '#l',
+          easing: 'swing',
+          enableDebug: false,
+          closable: true,
+          showFirstLastArrows: false,
+          selectTabAfterScroll: true
+        }
+      });
+    $('#example_3').scrollTabs({
+      scrollOptions: {
         easing: 'swing',
-        enableDebug: true,
+        enableDebug: false,
         closable: true,
         showFirstLastArrows: false,
-        selectTabAfterScroll: false
-      });
+        selectTabAfterScroll: true
+      }
+    });
   } else {
     // example
     $tabs = $('#example_1')
       .tabs();
   }
 
-  $tabs = $('#example_2')
-    .tabs();
+  $('#example_2').tabs();
 
   // Add new tab
   $('#addTab_1').click(() => {

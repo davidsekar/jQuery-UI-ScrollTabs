@@ -9,39 +9,44 @@
 
 /* Scroll tab default css*/
 
-.stMainWrapper {
-  .tabHeaderWraper {
-    position: relative;
-    border: 1px solid #e78f08;
-    background: #f6a828;
-    @extend %clearfix;
-    .inner_scroll {
-      z-index: 1;
-      overflow: hidden;
-    }
+.ui-scroll-tabs {
+  &-view {
+    z-index: 1;
+    overflow: hidden;
     .ui-widget-header {
-      background: none;
       border: none;
+      background: transparent;
     }
+  }
+  &-header {
+    position: relative;
+    overflow: hidden;
+    @extend %clearfix;
     .stNavMain {
       position: absolute;
       top: 0;
       z-index: 2;
       height: 100%;
       opacity: 0;
-      transition: opacity .5s swing;
+      transition: left .5s, right .5s, opacity .8s;
+      transition-timing-function: swing;
       button {
         height: 100%;
       }
     }
-    .stNavVisible {
-      opacity: 1;
-    }
     .stNavMainLeft {
-      left: 0;
+      left: -250px;
+      &.stNavVisible {
+        left: 0;
+        opacity: 1;
+      }
     }
     .stNavMainRight {
-      right: 0;
+      right: -250px;
+      &.stNavVisible {
+        right: 0;
+        opacity: 1;
+      }
     }
     ul.ui-tabs-nav {
       position: relative;

@@ -1,5 +1,5 @@
 interface JQuery<TElement extends Node = HTMLElement> {
-  scrollabletabs: (options: ScrollTabOptions) => JQuery<HTMLElement>;
+  scrollTabs: (options?: any) => JQuery<HTMLElement>;
   swipe: JQuerySwipe<HTMLElement>;
 }
 
