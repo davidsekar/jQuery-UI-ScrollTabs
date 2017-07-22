@@ -74,3 +74,16 @@ $("#my-tabs").scrollTabs({
   }
 });
 ```
+
+You can see the entire project documentation on available options and methods on [project github pages](https://davidsekar.github.io/jQuery-UI-ScrollTabs/).
+
+### Plugin Development & Contributions
+Pull request for new features and bug fixes with a detailed information on changes are welcome.
+
+This project uses Gulp based build system.
+
+So for local setup, download the master branch
+
+1. Execute ```npm install```
+2. Use vscode Shift + Ctrl + B, to build the project or execute ```npm run build```
+3. Start development using live server(Browser Sync) using ```npm start```
