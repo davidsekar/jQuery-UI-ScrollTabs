@@ -203,7 +203,7 @@
       this._setupNavControls();
       this._showNavsIfNeeded();
       this._addNavEvents();
-      $(window).on('resize', this.debounceEvent(() => this._showNavsIfNeeded));
+      $(window).on('resize', this.debounceEvent(() => { this._showNavsIfNeeded(); }));
     },
     /**
      * Check if navigation need then show; otherwise hide it
