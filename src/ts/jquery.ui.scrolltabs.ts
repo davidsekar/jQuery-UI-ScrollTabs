@@ -35,7 +35,7 @@
         nextPrevOutward: false,
         wrapperCssClass: '',
         enableDebug: false,
-        headerHTML: '<div class="ui-scroll-tabs-header ui-widget-header ui-corner-all"/>',
+        headerHTML: '<div class="ui-widget-header ui-corner-all"/>',
         headerScrollHTML: '<div class="ui-scroll-tabs-view"/>',
         leftArrowWrapperHTML: '<div class="stNavMain stNavMainLeft"/>',
         prevArrowButtonHTML: '<button class="stNavPrevArrow ui-state-active" title="Previous">' +
@@ -60,11 +60,18 @@
 
       const $elem: JQuery<HTMLElement> = this.element;
       this.$ul = $elem.find('ol,ul').eq(0).detach();
+
+      /* Add custom markup */
       const $headerWrapper = $(this.options.scrollOptions.headerHTML);
+      $headerWrapper.addClass('ui-scroll-tabs-header');
       $elem.prepend($headerWrapper);
+
       const $innerWrapper = $(this.options.scrollOptions.headerScrollHTML);
+      $innerWrapper.addClass('ui-scroll-tabs-view');
       $headerWrapper.append($innerWrapper);
+
       $innerWrapper.append(this.$ul);
+      /* End */
 
       this._setOption('activate', (event: JQuery.Event, ui: JQueryUI.TabsActivationUIParams) => {
         this._animateToActiveTab(event);
@@ -85,7 +92,7 @@
       this._super(index);
     },
     _setupUserOptions() {
-      const options = this.options;
+      const options = this.options.scrollOptions;
       this.debounceEnabled = $.debounce ? true : false;
       this.debug('isDebounceEnabled : ' + this.debounceEnabled);
 
@@ -380,7 +387,7 @@
         return;
       }
 
-      this._activate(0);
+      this._activate(this._findNextTab(0, false));
     },
     /**
      * Handles move to last tab link click
@@ -394,17 +401,7 @@
         return;
       }
 
-      this._activate(this.tabs.length - 1);
-    },
-
-    _liWidth($tab?: any) {
-      let w: number;
-      w = 0;
-      this.tabs.each(function () {
-        w += $(this).outerWidth();
-      });
-      // 20px buffer is for vertical scrollbars if any
-      return w;
+      this._activate(this._findNextTab(this.tabs.length - 1, true));
     },
 
     _addclosebutton($li?: JQuery<HTMLElement>) {
@@ -454,6 +451,34 @@
       anc.closest('li').remove();
       // Refresh the tabs widget
       this.refresh();
+    },
+    _destroy() {
+      this._super();
+
+      /* Remove navigation controls */
+      this.$leftArrowWrapper.remove();
+      this.$rightArrowWrapper.remove();
+
+      /* undo the close button */
+      this.tabs.each((idx: number, element: JQuery<HTMLElement>) => {
+        const self = $(element);
+        self.removeClass('stHasCloseBtn');
+        self.find('.stCloseBtn').remove();
+      });
+
+      /* Undo enhanced tab headers */
+      const $headerWrapper = this.$ul.closest('.ui-scroll-tabs-header');
+
+      this.$ul = this.$ul.detach();
+      $headerWrapper.remove();
+      this.element.prepend(this.$ul);
+
+      /* Remove class from the base wrapper */
+      this.element.removeClass(this.options.wrapperCssClass)
+        .removeClass('ui-scroll-tabs');
+
+      /* unsubscribe from the global resize event */
+      $(window).off('resize', this.debounceEvent(() => { this._showNavsIfNeeded(); }));
     }
   });
 })(jQuery);
