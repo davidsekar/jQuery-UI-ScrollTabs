@@ -459,6 +459,7 @@
       this._addclosebutton(tab);
 
       this.refresh();
+      this._showNavsIfNeeded();
     },
     removeTab(anc: JQuery<HTMLElement>) {
       const tabId = anc.attr('href');
