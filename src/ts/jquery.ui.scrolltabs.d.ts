@@ -1,6 +1,13 @@
 interface JQuery<TElement extends Node = HTMLElement> {
   scrollTabs: (options?: any) => JQuery<HTMLElement>;
   swipe: JQuerySwipe<HTMLElement>;
+  mousewheel: JQuery<HTMLElement>;
+}
+
+declare namespace JQueryUI {
+  interface UI {
+    scrollTabs: (options?: any) => JQuery<HTMLElement>;
+  }
 }
 
 interface SwipePhases {

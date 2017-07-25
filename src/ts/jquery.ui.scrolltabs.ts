@@ -53,7 +53,8 @@
       previous: 1,
       next: 2,
       first: 3,
-      last: 4
+      last: 4,
+      mouseScroll: 5
     },
     _create() {
       const options = this.options;
@@ -168,6 +169,17 @@
         }
       });
     },
+    _bindMouseScroll() {
+      if ($.isFunction($.fn.mousewheel)) {
+        const self = this;
+        this.$scrollDiv.on('mousewheel', (event: any) => {
+          event.preventDefault();
+          self._scrollWithoutSelection(this.navigateOptions.mouseScroll,
+            event.deltaY * event.deltaFactor * 2.5);
+          self.debug(event.deltaX + ',' + event.deltaY + ',' + event.deltaFactor);
+        });
+      }
+    },
     /**
      * Initializes the navigation controls based on user settings
      */
@@ -202,6 +214,7 @@
 
       this._addclosebutton();
       this._bindTouchEvents();
+      this._bindMouseScroll();
     },
     /**
      * Initializes all the controls and events required for scroll tabs
@@ -268,7 +281,7 @@
 
       return hiddenDirection;
     },
-    _scrollWithoutSelection(navOpt: number) {
+    _scrollWithoutSelection(navOpt: number, sLeft?: number) {
       let scrollLeft = this.$scrollDiv.scrollLeft();
 
       switch (navOpt) {
@@ -283,6 +296,9 @@
           break;
         case this.navigateOptions.next:
           scrollLeft += this.$scrollDiv.outerWidth() / 2;
+          break;
+        case this.navigateOptions.mouseScroll:
+          scrollLeft += sLeft;
           break;
       }
 
