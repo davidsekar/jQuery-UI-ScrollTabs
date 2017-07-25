@@ -442,7 +442,25 @@
         });
       });
     },
+    addTab(header: string, panelContent: string) {
+      const newId: string = $({}).uniqueId()[0].id;
+      const tab = $('<li><a href="#' + newId + '" role="tab">' + header + '</a></li>');
+      const panel = this._createPanel(newId);
+      panel.html(panelContent);
 
+      this.$ul.append(tab);
+      panel.attr('aria-live', 'polite');
+
+      if (panel.length) {
+        $(this.panels[this.panels.length - 1]).after(panel);
+      }
+
+      panel.attr('role', 'tabpanel');
+      this._addclosebutton(tab);
+
+      this.refresh();
+      this._showNavsIfNeeded();
+    },
     removeTab(anc: JQuery<HTMLElement>) {
       const tabId = anc.attr('href');
       // Remove the panel
@@ -481,4 +499,5 @@
       $(window).off('resize', this.debounceEvent(() => { this._showNavsIfNeeded(); }));
     }
   });
+  return $.ui.scrollTabs;
 })(jQuery);

@@ -16,6 +16,11 @@ $(() => {
     }
   });
 
+  // $('#addRandomTab').on('click', (e) => {
+  //   $('#example_0').data('uiScrollTabs')
+  //     .addTab(keywords[Math.floor(Math.random() * keywords.length) + 1], );
+  // });
+
   if (scrollEnabled) {
     $tabs = $('#example_1')
       .scrollTabs({
@@ -49,14 +54,14 @@ $(() => {
   $('#example_2').tabs();
 
   // Add new tab
-  $('#addTab_1').click(() => {
+  $('#addRandomTab').click(() => {
     const label = keywords[Math.floor(Math.random() * keywords.length)];
     const content = 'This is the content for the ' + label + '<br>Lorem ipsum dolor sit amet,' +
       ' consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce purus leo,' +
       ' faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim,' +
       ' varius sagittis eros imperdiet in. Vivamus semper sem at metus mattis a' +
       ' aliquam neque ornare. Proin sed semper lacus.';
-    $tabs.trigger('addTab', [label, content]);
+    $('#example_0').data('uiScrollTabs').addTab(label, content);
     return false;
   });
 });
