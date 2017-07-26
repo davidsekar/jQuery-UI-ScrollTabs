@@ -13,6 +13,7 @@
     $navLast: null,
     debounceEnabled: false,
     eventDelay: 350,
+    eventNameSpace: '.ui-scrollTabs',
     options: {
       scrollOptions: {
         animateTabs: false,
@@ -172,7 +173,7 @@
     _bindMouseScroll() {
       if ($.isFunction($.fn.mousewheel)) {
         const self = this;
-        this.$scrollDiv.on('mousewheel', (event: any) => {
+        this.$scrollDiv.on('mousewheel' + this.eventNameSpace, (event: any) => {
           event.preventDefault();
           self._scrollWithoutSelection(this.navigateOptions.mouseScroll,
             event.deltaY * event.deltaFactor * 2.5);
@@ -223,7 +224,8 @@
       this._setupNavControls();
       this._showNavsIfNeeded();
       this._addNavEvents();
-      $(window).on('resize', this.debounceEvent(() => { this._showNavsIfNeeded(); }));
+      $(window).on('resize' + this.eventNameSpace,
+        this.debounceEvent(() => { this._showNavsIfNeeded(); }));
     },
     /**
      * Check if navigation need then show; otherwise hide it
@@ -344,25 +346,25 @@
       // Handle next tab
       this.$navNext = this.$navNext || $();
       this.$navNext = this._getCustomNavSelector(this.$navNext, 'Next');
-      this.$navNext.on('click',
+      this.$navNext.on('click' + this.eventNameSpace,
         this.debounceEvent((e: JQuery.Event) => { this._moveToNextTab(e); }));
 
       // Handle previous tab
       this.$navPrev = this.$navPrev || $();
       this.$navPrev = this._getCustomNavSelector(this.$navPrev, 'Prev');
-      this.$navPrev.on('click',
+      this.$navPrev.on('click' + this.eventNameSpace,
         this.debounceEvent((e: JQuery.Event) => { this._moveToPrevTab(e); }));
 
       // Handle First tab
       this.$navFirst = this.$navFirst || $();
       this.$navFirst = this._getCustomNavSelector(this.$navFirst, 'First');
-      this.$navFirst.on('click',
+      this.$navFirst.on('click' + this.eventNameSpace,
         this.debounceEvent((e: JQuery.Event) => { this._moveToFirstTab(e); }));
 
       // Handle last tab
       this.$navLast = this.$navLast || $();
       this.$navLast = this._getCustomNavSelector(this.$navLast, 'Last');
-      this.$navLast.on('click',
+      this.$navLast.on('click' + this.eventNameSpace,
         this.debounceEvent((e: JQuery.Event) => { this._moveToLastTab(e); }));
     },
     /**
@@ -435,7 +437,7 @@
 
         $thisLi.find('.stCloseBtn').hover(function () {
           $(this).toggleClass('ui-state-hover');
-        }).on('click', (e) => {
+        }).on('click' + this.eventNameSpace, (e) => {
           const removeIdx = self.tabs.index($thisLi);
           let selectTabIdx: number;
           selectTabIdx = -1;
@@ -511,8 +513,8 @@
       this.element.removeClass(this.options.wrapperCssClass)
         .removeClass('ui-scroll-tabs');
 
-      /* unsubscribe from the global resize event */
-      $(window).off('resize', this.debounceEvent(() => { this._showNavsIfNeeded(); }));
+      /* unsubscribe all events in namespace */
+      $(window).off('.ui-scrollTabs');
     }
   });
   return $.ui.scrollTabs;
