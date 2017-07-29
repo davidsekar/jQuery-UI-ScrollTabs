@@ -30,8 +30,12 @@
       opacity: 0;
       transition: left .5s, right .5s, opacity .8s;
       transition-timing-function: swing;
-      button {
+      button, .navbutton {
         height: 100%;
+      }
+      .navbutton{
+        display: inline-block;
+        padding: 5px;
       }
     }
     .stNavMainLeft {
