@@ -29,6 +29,21 @@
       font-size: 13px
     }
 
+    h1 {
+      font-size: 20px;
+    }
+
+    h1 a {
+      font-size: 14px;
+      float: right;
+    }
+
+    h1::after {
+      content: ' ';
+      clear: both;
+      display: block;
+    }
+
     h2 {
       font-size: 16px;
       text-decoration: underline;
@@ -40,11 +55,18 @@
       box-shadow: 4px 4px 5px #888888;
     }
 
+    #back-to-top{
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      padding: 5px 10px;
+    }
+
   </style>
 </head>
 
 <body>
-  <h1>DEMO - JQUERY UI SCROLLTABS</h1>
+  <h1>DEMO - JQUERY UI SCROLLTABS <a href="./">Back to <br>Homepage</a></h1>
   <div class="border">
     <h2>1. Default tabs control</h2>
     <div id="example_0_1">
@@ -320,6 +342,7 @@
         in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
     </div>
   </div>
+  <button type="button" id="back-to-top">Go to Top</button>
 </body>
 
 </html>
