@@ -9,9 +9,10 @@ var header = require('gulp-header');
 
 var paths = {
   deps: ['deps/js/**/*.js', 'deps/css/**/*'],
-  html: ['src/**/*.html', 'index.html'],
+  html: ['src/**/*.html'],
   scss: ['src/scss/**/*.scss'],
   ts: ['src/ts/**/*.ts'],
+  docs: ['index.html', 'docs/**/*']
 };
 
 var dest = {
@@ -74,7 +75,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('github-pages', function () {
-  return gulp.src(['index.html', 'docs/**/*'], {
+  return gulp.src(paths.docs, {
       base: '.'
     })
     .pipe(gulp.dest(dest.root));
@@ -99,6 +100,7 @@ gulp.task('watch', ['copy-dependency', 'html', 'scss', 'ts', 'github-pages'], fu
   gulp.watch(paths.ts, ['ts-watch']);
   gulp.watch(paths.scss, ['scss-watch']);
   gulp.watch(paths.html, ['html-watch']);
+  gulp.watch(paths.docs, ['github-pages']);
 });
 
 gulp.task('deploy-files', ['copy-dependency', 'scss', 'ts', 'html', 'github-pages'])
