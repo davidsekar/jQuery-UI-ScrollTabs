@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="docs/css/bootstrap.min.css" rel="stylesheet">
+  <link href="docs/css/style.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+    crossorigin="anonymous"></script>
+  <script type="text/javascript" src="docs/js/tether.min.js"></script>
+  <script type="text/javascript" src="docs/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <a id="skippy" class="sr-only sr-only-focusable" href="#content">
+    <div class="container">
+      <span class="skiplink-text">Skip to main content</span>
+    </div>
+  </a>
+  <header class="navbar navbar-toggleable-md navbar-light bg-faded">
+    <nav class="container">
+      <div class="d-flex justify-content-between hidden-lg-up">
+        <a class="navbar-brand" href="./">jQuery UI ScrollTabs</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+      </div>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="./">jQuery UI ScrollTabs <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Documentation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="demo.html">Demo</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <h1 class="display-4">jQuery UI ScrollTabs</h1>
+          <img class="img-fluid" src="https://travis-ci.org/davidsekar/jQuery-UI-ScrollTab.svg?branch=master" /><br><br>
+          <p class="lead">
+            This is a jQuery UI widget build using UI widget factory. It <strong><em>extends</em></strong> the default jQuery
+            UI tabs, so it is <strong><em>as customizable as</em></strong> default tabs widget. It extends the default widget
+            behaviour with scrollable tabs feature, that always keeps ALL your tabs in a single line.</p>
+          <hr/>
+          <p class="console">It handles all required markup enhancements within the widget <em><code>create</code></em> event, so it simply
+            works on the default <em>ui.tabs</em> widget HTML structure.<br/><br/>
+            <a class="btn btn-primary btn-lg" href="demo.html" role="button">View demo here</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <p>This plugin with scrollable tabs feature included, which helps you to keep all your tabs on single line. You can
+          have multiple instances of the widget, as well as nest them as usual. It automatically handles showing the navigation
+          controls like next, previous, first & last etc., based on user options. It watches the the device screen viewport
+          changes and shows the nav controls automatically which makes it ideal for responsive/fluid pages.</p>
+        <p>It also has support for swipe events in touch enabled screens enabled _through optional dependency_. This plugin
+          has few optional dependencies, when found in the $.fn scope will be used to enhance the plugin features.</p>
+        <p>Following libraries are
+          <strong class="d-block">Required:</strong>
+          <ul>
+            <li>jQuery (tested in version 1.11+)</li>
+            <li>jQuery UI tabs (tested in 1.11 +)</li>
+          </ul>
+          <strong class="d-block">Optional:</strong>
+          <ul>
+            <li><a href="https://github.com/cowboy/jquery-throttle-debounce">jQuery debounce plugin</a> - throttle or debounce
+              the events like resize, click etc., which avoids unwanted multiple executions.</li>
+            <li><a href="https://github.com/mattbryson/TouchSwipe-Jquery-Plugin">jQuery TouchSwipe</a> - offers swipe feature
+              for the tab headers which makes it easier access on touch based devices.</li>
+            <li><a href="https://github.com/jquery/jquery-mousewheel">jQuery Mousewheel</a> - It allows mouse scroll for moving
+              through the tab headers.</li>
+          </ul>
+        </p>
+        <p>
+          <h2 class="h4 text-uppercase">Basic Usage</h2>
+          Download the required scripts and style from the releases. Add it to your page &lt;head> tag
+          <pre>
+          <code>
+&lt;!-- jQuery UI base css. Here I've included complete CSS for brevity -->
+&lt;link type="text/css" href="css/ui-lightness/jquery.ui.all.css" rel="stylesheet" />
+&lt;script type="text/javascript" src="js/jquery-1.11.3.min.js">&lt;/script>
+
+&lt;!-- Optionals starts -->
+&lt;script type="text/javascript" src="js/jquery.ba-throttle-debounce.min.js">&lt;/script>
+&lt;script type="text/javascript" src="js/jquery.touchSwipe.min.js">&lt;/script>
+&lt;!-- Optional Ends -->
+
+&lt;script type="text/javascript" src="js/jquery-ui-1.11.4.min.js">&lt;/script>
+&lt;script type="text/javascript" src="js/jquery.ui.scrolltabs.js">&lt;/script></code>
+          </pre>
+        </p>
+        <p>
+          <h2 class="h4 text-uppercase">Initialization script</h2>
+          <pre>
+          <code>
+$("#my-tabs").scrollTabs({
+ // Normal tabs options
+ active: 1,
+ collapsible: true,
+ // Extended Scrolltabs options
+  scrollOptions: {
+    animateTabs: false,
+    showNavWhenNeeded: true,
+    customNavNext: null,
+    customNavPrev: null,
+    customNavFirst: null,
+    customNavLast: null,
+    closable: true,
+    easing: 'swing',
+    loadLastTab: false,
+    onTabScroll() { // empty },
+    scrollSpeed: 500,
+    selectTabOnAdd: true,
+    selectTabAfterScroll: true,
+    showFirstLastArrows:true,
+    hideDefaultArrows: false,
+    nextPrevOutward: false,
+    wrapperCssClass: '',
+    enableDebug: false,
+    ....
+  }
+});</code>
+</pre> For more options & customization check out the <a href="docs/">documentation</a>.
+        </p>
+        <p>
+          <h2 class="h4 text-uppercase">Plugin Development & Contributions</h2>
+          Pull request for new features or bug fixes with a proper information are welcome.
+        </p>
+        <p>
+          <h3 class="h6 text-uppercase">Technical background</h3>
+          This project uses
+          <ul>
+            <li>Gulp based build system</li>
+            <li>Typescript (TSLint)</li>
+            <li>Sass (Libsass)</li>
+            <li>BrowserSync</li>
+            <li>jQuery types (@types/jquery)</li>
+            <li>Vscode tasks and debug setting are preconfigured</li>
+          </ul>
+        </p>
+        <p>
+          <h3 class="h6 text-uppercase">Local development</h2>
+            So for local setup:
+            <ol>
+              <li>download the master branch</li>
+              <li>execute <code>npm install</code></li>
+              <li>use vscode <kbd>Shift + Ctrl + B</kbd> to build the project or execute using <kbd>npm run build</kbd></li>
+              <li>start live/dev server(Browser Sync) using command <kbd>npm start</kbd></li>
+              <li>start Visual Studio Code debug by using launch option <code>Launch in Chrome with Localhost</code></li>
+            </ol>
+        </p>
+      </div>
+    </div>
+  </div>
+  <footer class="small">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          Contributed with love by <a target="_blank" href="https://davidsekar.com">davidsekar</a>.<br>
+          Licensed under MIT.
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

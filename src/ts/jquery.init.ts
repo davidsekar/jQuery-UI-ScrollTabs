@@ -16,6 +16,13 @@ $(() => {
     }
   });
 
+  $('#example_0_1').scrollTabs({
+    scrollOptions: {
+      enableDebug: true,
+      selectTabAfterScroll: false
+    }
+  });
+
   // $('#addRandomTab').on('click', (e) => {
   //   $('#example_0').data('uiScrollTabs')
   //     .addTab(keywords[Math.floor(Math.random() * keywords.length) + 1], );
