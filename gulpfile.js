@@ -9,7 +9,7 @@ var header = require('gulp-header');
 
 var paths = {
   deps: ['deps/js/**/*.js', 'deps/css/**/*'],
-  html: ['src/**/*.html'],
+  html: ['src/**/*.html', 'index.html'],
   scss: ['src/scss/**/*.scss'],
   ts: ['src/ts/**/*.ts'],
 };
@@ -74,7 +74,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('github-pages', function () {
-  return gulp.src(['index.md', '_config.yml', 'docs/**/*'], {
+  return gulp.src(['index.html', '_config.yml', 'docs/**/*'], {
       base: '.'
     })
     .pipe(gulp.dest(dest.root));
@@ -82,7 +82,7 @@ gulp.task('github-pages', function () {
 
 // create a task that ensures the `js` task is complete before
 // reloading browsers
-gulp.task('watch', ['copy-dependency', 'html', 'scss', 'ts'], function (done) {
+gulp.task('watch', ['copy-dependency', 'html', 'scss', 'ts', 'github-pages'], function (done) {
   // Serve files from the root of this project
   browserSync.init({
     ui: {
@@ -90,7 +90,7 @@ gulp.task('watch', ['copy-dependency', 'html', 'scss', 'ts'], function (done) {
     },
     server: {
       baseDir: "./dist",
-      index: "demo.html"
+      index: "index.html"
     }
   });
 
