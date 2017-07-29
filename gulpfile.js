@@ -74,7 +74,7 @@ gulp.task('clean', function () {
 });
 
 gulp.task('github-pages', function () {
-  return gulp.src(['index.html', '_config.yml', 'docs/**/*'], {
+  return gulp.src(['index.html', 'docs/**/*'], {
       base: '.'
     })
     .pipe(gulp.dest(dest.root));
