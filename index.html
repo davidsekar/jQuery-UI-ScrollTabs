@@ -5,12 +5,14 @@
   <title></title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism.min.css">
   <link href="docs/css/bootstrap.min.css" rel="stylesheet">
   <link href="docs/css/style.css" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
     crossorigin="anonymous"></script>
   <script type="text/javascript" src="docs/js/tether.min.js"></script>
   <script type="text/javascript" src="docs/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
 </head>
 
 <body>
@@ -48,7 +50,7 @@
       <div class="row">
         <div class="col">
           <h1 class="display-4">jQuery UI ScrollTabs</h1>
-          <img class="img-fluid" src="https://travis-ci.org/davidsekar/jQuery-UI-ScrollTab.svg?branch=master" /><br><br>
+          <img class="img-fluid" src="https://travis-ci.org/davidsekar/jQuery-UI-ScrollTabs.svg?branch=master" /><br><br>
           <p class="lead">
             This is a jQuery UI widget build using UI widget factory. It <strong><em>extends</em></strong> the default jQuery
             UI tabs, so it is <strong><em>as customizable as</em></strong> default tabs widget. It extends the default widget
@@ -90,8 +92,7 @@
         <p>
           <h2 class="h4 text-uppercase">Basic Usage</h2>
           Download the required scripts and style from the releases. Add it to your page &lt;head> tag
-          <pre>
-          <code>
+          <pre><code class="language-html">
 &lt;!-- jQuery UI base css. Here I've included complete CSS for brevity -->
 &lt;link type="text/css" href="css/ui-lightness/jquery.ui.all.css" rel="stylesheet" />
 &lt;script type="text/javascript" src="js/jquery-1.11.3.min.js">&lt;/script>
@@ -102,14 +103,12 @@
 &lt;!-- Optional Ends -->
 
 &lt;script type="text/javascript" src="js/jquery-ui-1.11.4.min.js">&lt;/script>
-&lt;script type="text/javascript" src="js/jquery.ui.scrolltabs.js">&lt;/script></code>
-          </pre>
+&lt;script type="text/javascript" src="js/jquery.ui.scrolltabs.js">&lt;/script></code></pre>
         </p>
         <p>
           <h2 class="h4 text-uppercase">Initialization script</h2>
-          <pre>
-          <code>
-$("#my-tabs").scrollTabs({
+          <pre><code class="language-js">
+ $("#my-tabs").scrollTabs({
  // Normal tabs options
  active: 1,
  collapsible: true,
@@ -124,7 +123,9 @@ $("#my-tabs").scrollTabs({
     closable: true,
     easing: 'swing',
     loadLastTab: false,
-    onTabScroll() { // empty },
+    onTabScroll() {
+      // empty
+    },
     scrollSpeed: 500,
     selectTabOnAdd: true,
     selectTabAfterScroll: true,
@@ -135,8 +136,8 @@ $("#my-tabs").scrollTabs({
     enableDebug: false,
     ....
   }
-});</code>
-</pre> For more options & customization check out the <a href="docs/">documentation</a>.
+});</code></pre>
+For more options & customization check out the <a href="docs/">documentation</a>.
         </p>
         <p>
           <h2 class="h4 text-uppercase">Plugin Development & Contributions</h2>

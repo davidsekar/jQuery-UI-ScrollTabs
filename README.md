@@ -1,6 +1,6 @@
 ## jQuery UI Scroll tabs
 
-![Travis](https://travis-ci.org/davidsekar/jQuery-UI-ScrollTab.svg?branch=master)
+![Travis](https://travis-ci.org/davidsekar/jQuery-UI-ScrollTabs.svg?branch=master)
 
 This is a pure jQuery UI widget that extends the default jQuery UI tabs. It handles all the markup enhancements within the widget create event and it works on the default widget HTML structure.
 
