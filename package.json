@@ -13,9 +13,11 @@
     "gulp-header": "^1.8.9",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.0",
+    "gulp-typedoc": "^2.0.2",
     "gulp-typescript": "^3.2.0",
     "rimraf": "^2.6.1",
     "tslint": "^5.5.0",
+    "typedoc": "^0.8.0",
     "typescript": "^2.4.2"
   },
   "scripts": {

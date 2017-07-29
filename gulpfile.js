@@ -6,6 +6,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var tsProject = typeScript.createProject("tsconfig.json");
 var rimraf = require('rimraf');
 var header = require('gulp-header');
+var typedoc = require("gulp-typedoc");
 
 var paths = {
   deps: ['deps/js/**/*.js', 'deps/css/**/*'],
@@ -81,6 +82,28 @@ gulp.task('github-pages', function () {
     .pipe(gulp.dest(dest.root));
 });
 
+gulp.task("typedoc", function () {
+  return gulp
+    .src(["src/**/*.d.ts"])
+    .pipe(typedoc({
+      // TypeScript options (see typescript docs)
+      module: "commonjs",
+      target: "es5",
+      includeDeclarations: true,
+
+      // Output options (see typedoc docs)
+      out: "./dist/docs/options",
+      excludeExternals: true,
+      readme: 'none',
+
+      // TypeDoc options (see typedoc docs)
+      name: pkg.name,
+      theme: "default",
+      ignoreCompilerErrors: false,
+      version: true,
+    }));
+});
+
 // create a task that ensures the `js` task is complete before
 // reloading browsers
 gulp.task('watch', ['copy-dependency', 'html', 'scss', 'ts', 'github-pages'], function (done) {
@@ -103,7 +126,7 @@ gulp.task('watch', ['copy-dependency', 'html', 'scss', 'ts', 'github-pages'], fu
   gulp.watch(paths.docs, ['github-pages']);
 });
 
-gulp.task('deploy-files', ['copy-dependency', 'scss', 'ts', 'html', 'github-pages'])
+gulp.task('deploy-files', ['copy-dependency', 'scss', 'ts', 'html', 'github-pages', 'typedoc']);
 
 // use default task to launch Browsersync and watch JS files
 gulp.task('default', ['copy-dependency', 'scss', 'ts', 'html']);
