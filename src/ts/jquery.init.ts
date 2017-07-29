@@ -78,4 +78,8 @@ $(() => {
       'Last Tab</a>',
     }
   });
+  $('#back-to-top').on('click', (e) => {
+    const body = $('html, body');
+    body.stop().animate({ scrollTop: 0 }, 500, 'swing');
+  });
 });
