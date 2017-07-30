@@ -13,7 +13,7 @@ var paths = {
   html: ['src/**/*.html'],
   scss: ['src/scss/**/*.scss'],
   ts: ['src/ts/**/*.ts'],
-  docs: ['index.html', 'docs/**/*']
+  docs: ['index.html', '.nojekyll', 'docs/**/*']
 };
 
 var dest = {
