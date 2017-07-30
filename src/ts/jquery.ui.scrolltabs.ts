@@ -26,21 +26,21 @@
         '<span class="ui-icon ui-icon-seek-prev">Previous tab</span></button>',
         easing: 'swing',
         enableDebug: false,
+        headerHTML: '<div class="ui-widget-header ui-corner-all"/>',
+        headerScrollHTML: '<div class="ui-scroll-tabs-view"/>',
         hideDefaultArrows: false,
+        leftArrowWrapperHTML: '<div class="stNavMain stNavMainLeft"/>',
         loadLastTab: false,
         onTabScroll() {
           // empty
         },
+        rightArrowWrapperHTML: '<div class="stNavMain stNavMainRight"/>',
         scrollSpeed: 500,
-        selectTabOnAdd: true,
         selectTabAfterScroll: true,
+        selectTabOnAdd: true,
         showFirstLastArrows: true,
-        wrapperCssClass: '',
         showNavWhenNeeded: true,
-        headerHTML: '<div class="ui-widget-header ui-corner-all"/>',
-        headerScrollHTML: '<div class="ui-scroll-tabs-view"/>',
-        leftArrowWrapperHTML: '<div class="stNavMain stNavMainLeft"/>',
-        rightArrowWrapperHTML: '<div class="stNavMain stNavMainRight"/>'
+        wrapperCssClass: ''
       }
     },
     navigateOptions: {

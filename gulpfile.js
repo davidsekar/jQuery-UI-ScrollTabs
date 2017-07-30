@@ -101,7 +101,7 @@ gulp.task("typedoc", function () {
 
       // TypeDoc options (see typedoc docs)
       name: pkg.name,
-      theme: "default",
+      theme: "minimal",
       ignoreCompilerErrors: false,
       version: true,
     }));
