@@ -13,13 +13,15 @@ var paths = {
   html: ['src/**/*.html'],
   scss: ['src/scss/**/*.scss'],
   ts: ['src/ts/**/*.ts'],
+  typeDef: ['src/ts/**/*.d.ts'],
   docs: ['index.html', '.nojekyll', 'docs/**/*']
 };
 
 var dest = {
   root: 'dist/',
   js: 'dist/js',
-  css: 'dist/css'
+  css: 'dist/css',
+  typeDocOut: 'dist/docs/options'
 };
 
 function refreshBrowserSync(done) {
@@ -84,7 +86,7 @@ gulp.task('github-pages', function () {
 
 gulp.task("typedoc", function () {
   return gulp
-    .src(["src/**/*.d.ts"])
+    .src(paths.typeDef)
     .pipe(typedoc({
       // TypeScript options (see typescript docs)
       module: "commonjs",
@@ -92,7 +94,7 @@ gulp.task("typedoc", function () {
       includeDeclarations: true,
 
       // Output options (see typedoc docs)
-      out: "./dist/docs/options",
+      out: dest.typeDocOut,
       excludeExternals: true,
       readme: 'none',
       mode: 'file',
@@ -105,9 +107,11 @@ gulp.task("typedoc", function () {
     }));
 });
 
+var taskList = ['copy-dependency', 'scss', 'ts', 'html', 'github-pages', 'typedoc'];
+
 // create a task that ensures the `js` task is complete before
 // reloading browsers
-gulp.task('watch', ['copy-dependency', 'html', 'scss', 'ts', 'github-pages'], function (done) {
+gulp.task('watch', taskList, function (done) {
   // Serve files from the root of this project
   browserSync.init({
     ui: {
@@ -125,9 +129,10 @@ gulp.task('watch', ['copy-dependency', 'html', 'scss', 'ts', 'github-pages'], fu
   gulp.watch(paths.scss, ['scss-watch']);
   gulp.watch(paths.html, ['html-watch']);
   gulp.watch(paths.docs, ['github-pages']);
+  gulp.watch(paths.typeDef, ['typedoc']);
 });
 
-gulp.task('deploy-files', ['copy-dependency', 'scss', 'ts', 'html', 'github-pages', 'typedoc']);
+gulp.task('deploy-files', taskList);
 
 // use default task to launch Browsersync and watch JS files
-gulp.task('default', ['copy-dependency', 'scss', 'ts', 'html']);
+gulp.task('default', taskList);
