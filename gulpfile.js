@@ -95,6 +95,7 @@ gulp.task("typedoc", function () {
       out: "./dist/docs/options",
       excludeExternals: true,
       readme: 'none',
+      mode: 'file',
 
       // TypeDoc options (see typedoc docs)
       name: pkg.name,
