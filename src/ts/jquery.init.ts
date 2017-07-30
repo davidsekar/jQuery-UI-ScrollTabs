@@ -21,13 +21,21 @@ $(() => {
   $('#example_0').scrollTabs({
     scrollOptions: {
       enableDebug: true,
-      selectTabAfterScroll: false
+      selectTabAfterScroll: false,
+      selectTabOnAdd: true
     }
   });
 
   $('#addRandomTab').on('click', (e) => {
+    const randIdx = Math.floor(Math.random() * keywords.length);
     $('#example_0').data('uiScrollTabs')
-      .addTab(keywords[Math.floor(Math.random() * keywords.length) + 1], );
+      .addTab(keywords[randIdx],
+      keywords[randIdx] + '<br>' +
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
+      ' Quisque hendrerit vulputate porttitor. Fusce purus leo, faucibus' +
+      ' a sagittis congue, molestie tempus felis. Donec convallis semper enim,' +
+      ' varius sagittis eros imperdiet in. Vivamus semper sem at metus mattis' +
+      ' a aliquam neque ornare. Proin sed semper lacus.');
   });
 
   $('#example_1')

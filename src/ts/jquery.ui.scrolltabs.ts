@@ -15,14 +15,18 @@
     eventDelay: 350,
     options: {
       scrollOptions: {
-        animateTabs: false,
-        showNavWhenNeeded: true,
-        customNavNext: null,
-        customNavPrev: null,
-        customNavFirst: null,
-        customNavLast: null,
         closable: true,
+        customGotoFirstHTML: '<button class="stNavFirstArrow ui-state-active" title="First">' +
+        '<span class="ui-icon ui-icon-seek-first">First tab</span></button>',
+        customMoveNextHTML: '<button class="stNavNextArrow ui-state-active" title="Next">' +
+        '<span class="ui-icon ui-icon-seek-next">Next tab</span></button>',
+        customGoToLastHTML: '<button class="stNavLastArrow ui-state-active" title="Last">' +
+        '<span class="ui-icon ui-icon-seek-end">Last tab</span></button>',
+        customMovePreviousHTML: '<button class="stNavPrevArrow ui-state-active" title="Previous">' +
+        '<span class="ui-icon ui-icon-seek-prev">Previous tab</span></button>',
         easing: 'swing',
+        enableDebug: false,
+        hideDefaultArrows: false,
         loadLastTab: false,
         onTabScroll() {
           // empty
@@ -31,22 +35,12 @@
         selectTabOnAdd: true,
         selectTabAfterScroll: true,
         showFirstLastArrows: true,
-        hideDefaultArrows: false,
-        nextPrevOutward: false,
         wrapperCssClass: '',
-        enableDebug: false,
+        showNavWhenNeeded: true,
         headerHTML: '<div class="ui-widget-header ui-corner-all"/>',
         headerScrollHTML: '<div class="ui-scroll-tabs-view"/>',
         leftArrowWrapperHTML: '<div class="stNavMain stNavMainLeft"/>',
-        prevArrowButtonHTML: '<button class="stNavPrevArrow ui-state-active" title="Previous">' +
-        '<span class="ui-icon ui-icon-seek-prev">Previous tab</span></button>',
-        firstArrowButtonHTML: '<button class="stNavFirstArrow ui-state-active" title="First">' +
-        '<span class="ui-icon ui-icon-seek-first">First tab</span></button>',
-        rightArrowWrapperHTML: '<div class="stNavMain stNavMainRight"/>',
-        nextArrowButtonHTML: '<button class="stNavNextArrow ui-state-active" title="Next">' +
-        '<span class="ui-icon ui-icon-seek-next">Next tab</span></button>',
-        lastArrowButtonHTML: '<button class="stNavLastArrow ui-state-active" title="Last">' +
-        '<span class="ui-icon ui-icon-seek-end">Last tab</span></button>',
+        rightArrowWrapperHTML: '<div class="stNavMain stNavMainRight"/>'
       }
     },
     navigateOptions: {
@@ -195,17 +189,17 @@
       this.$rightArrowWrapper = $(this.options.scrollOptions.rightArrowWrapperHTML);
 
       if (!this.options.scrollOptions.hideDefaultArrows) {
-        this.$navPrev = $(this.options.scrollOptions.prevArrowButtonHTML);
+        this.$navPrev = $(this.options.scrollOptions.customMovePreviousHTML);
         this.$leftArrowWrapper.append(this.$navPrev);
 
-        this.$navNext = $(this.options.scrollOptions.nextArrowButtonHTML);
+        this.$navNext = $(this.options.scrollOptions.customMoveNextHTML);
         this.$rightArrowWrapper.append(this.$navNext);
 
         if (this.options.scrollOptions.showFirstLastArrows === true) {
-          this.$navFirst = $(this.options.scrollOptions.firstArrowButtonHTML);
+          this.$navFirst = $(this.options.scrollOptions.customGotoFirstHTML);
           this.$leftArrowWrapper.prepend(this.$navFirst);
 
-          this.$navLast = $(this.options.scrollOptions.lastArrowButtonHTML);
+          this.$navLast = $(this.options.scrollOptions.customGoToLastHTML);
           this.$rightArrowWrapper.append(this.$navLast);
         } else {
           this.$navFirst = this.$navLast = $();
@@ -421,7 +415,9 @@
      * @param e pass the link click event
      */
     _moveToLastTab(e: JQuery.Event) {
-      e.preventDefault();
+      if (e) {
+        e.preventDefault();
+      }
 
       if (!this.options.scrollOptions.selectTabAfterScroll) {
         this._scrollWithoutSelection(this.navigateOptions.last);
@@ -444,27 +440,31 @@
           '<span class="ui-icon ui-icon-circle-close" title="Close this tab">Close</span>' +
           '</span>'));
 
-        $thisLi.find('.stCloseBtn').hover(function () {
+        const closeButton = $thisLi.find('.stCloseBtn').hover(function () {
           $(this).toggleClass('ui-state-hover');
-        }).on('click' + this.eventNameSpace, (e) => {
-          const removeIdx = self.tabs.index($thisLi);
-          let selectTabIdx: number;
-          selectTabIdx = -1;
+        });
 
-          if (self.options.active === removeIdx) {
-            const tabcount = self.tabs.length;
-            const mid = Math.ceil(tabcount / 2);
-            if (removeIdx > mid) {
-              selectTabIdx = removeIdx - 1;
-            } else {
-              selectTabIdx = removeIdx;
+        this._on(closeButton, {
+          click: (e: JQuery.Event) => {
+            const removeIdx = self.tabs.index($thisLi);
+            let selectTabIdx: number;
+            selectTabIdx = -1;
+
+            if (self.options.active === removeIdx) {
+              const tabcount = self.tabs.length;
+              const mid = Math.ceil(tabcount / 2);
+              if (removeIdx > mid) {
+                selectTabIdx = removeIdx - 1;
+              } else {
+                selectTabIdx = removeIdx;
+              }
             }
-          }
 
-          self.removeTab($thisLi.find('a.ui-tabs-anchor'));
+            self.removeTab($thisLi.find('a.ui-tabs-anchor'));
 
-          if (selectTabIdx > -1 && selectTabIdx !== removeIdx) {
-            self._activate(selectTabIdx);
+            if (selectTabIdx > -1 && selectTabIdx !== removeIdx) {
+              self._activate(selectTabIdx);
+            }
           }
         });
       });
@@ -486,6 +486,9 @@
       this._addclosebutton(tab);
 
       this.refresh();
+      if (this.options.scrollOptions.selectTabOnAdd) {
+        this._moveToLastTab();
+      }
       this._showNavsIfNeeded();
     },
     removeTab(anc: JQuery<HTMLElement>) {
