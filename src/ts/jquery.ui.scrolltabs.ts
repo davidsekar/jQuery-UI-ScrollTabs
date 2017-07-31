@@ -77,7 +77,7 @@
 
       this._setupUserOptions();
 
-      this.debug(this.eventNamespace);
+      this._debug(this.eventNamespace);
     },
     _setOption(key: string, value: any) {
       this._super(key, value);
@@ -91,7 +91,7 @@
     _setupUserOptions() {
       const options = this.options.scrollOptions;
       this.debounceEnabled = $.debounce ? true : false;
-      this.debug('isDebounceEnabled : ' + this.debounceEnabled);
+      this._debug('isDebounceEnabled : ' + this.debounceEnabled);
 
       const $elem: JQuery<HTMLElement> = this.element;
       $elem.addClass(options.wrapperCssClass + ' ui-scroll-tabs');
@@ -100,7 +100,7 @@
      * Centrally control all message to be logged to the console
      * @param message -message to be displayed
      */
-    debug(message: any, isError?: boolean) {
+    _debug(message: any, isError?: boolean) {
       if (this.options.scrollOptions.enableDebug) {
         if (isError === true) {
           console.error(message);
@@ -113,7 +113,7 @@
      * If debounce/throttle plugin is found, it debounces the event handler function
      * @param dbFunc the event handler function
      */
-    debounceEvent(dbFunc: (e: JQuery.Event) => void):
+    _debounceEvent(dbFunc: (e: JQuery.Event) => void):
       JQuery.EventHandler<HTMLElement> {
       return this.debounceEnabled ? $.debounce(this.eventDelay, dbFunc) : dbFunc;
     },
@@ -121,11 +121,11 @@
      * If debounce/throttle plugin is found, it uses it in the event handler function
      * @param dbFunc the event handler function
      */
-    throttleEvent(dbFunc: (e: JQuery.Event) => void):
+    _throttleEvent(dbFunc: (e: JQuery.Event) => void):
       JQuery.EventHandler<HTMLElement> {
       return this.debounceEnabled ? $.throttle(this.eventDelay, dbFunc) : dbFunc;
     },
-    scrollTabHeader(distance: number, duration: number) {
+    _scrollTabHeader(distance: number, duration: number) {
       if (distance < 0) {
         distance = 0;
       }
@@ -151,9 +151,9 @@
             const duration = 0;
             const distanceWithResistance = distance / 15;
             if (direction === $.fn.swipe.directions.LEFT) {
-              this.scrollTabHeader(currentScrollLeft + distanceWithResistance, duration);
+              this._scrollTabHeader(currentScrollLeft + distanceWithResistance, duration);
             } else if (direction === $.fn.swipe.directions.RIGHT) {
-              this.scrollTabHeader(currentScrollLeft - distanceWithResistance, duration);
+              this._scrollTabHeader(currentScrollLeft - distanceWithResistance, duration);
             }
           } else if (phase === $.fn.swipe.phases.PHASE_CANCEL) {
             // Don't animate for current swipe, as it is canceled
@@ -168,11 +168,13 @@
     _bindMouseScroll() {
       if ($.isFunction($.fn.mousewheel)) {
         const self = this;
-        this.$scrollDiv.on('mousewheel' + this.eventNameSpace, (event: any) => {
-          event.preventDefault();
-          self._scrollWithoutSelection(this.navigateOptions.mouseScroll,
-            event.deltaY * event.deltaFactor * 2.5);
-          self.debug(event.deltaX + ',' + event.deltaY + ',' + event.deltaFactor);
+        this._on(this.$scrollDiv, {
+          mousewheel: (event: any) => {
+            event.preventDefault();
+            self._scrollWithoutSelection(this.navigateOptions.mouseScroll,
+              event.deltaY * event.deltaFactor * 2.5);
+            self._debug(event.deltaX + ',' + event.deltaY + ',' + event.deltaFactor);
+          }
         });
       }
     },
@@ -220,8 +222,8 @@
       this._showNavsIfNeeded();
       this._addNavEvents();
       this._on(window, {
-        resize: this.debounceEvent(() => {
-          this.debug('resize: ' + this.eventNamespace);
+        resize: this._debounceEvent(() => {
+          this._debug('resize: ' + this.eventNamespace);
           this._showNavsIfNeeded();
         })
       });
@@ -346,28 +348,28 @@
       this.$navNext = this.$navNext || $();
       this.$navNext = this._getCustomNavSelector(this.$navNext, 'Next');
       this._on(this.$navNext, {
-        click: this.debounceEvent((e: JQuery.Event) => { this._moveToNextTab(e); })
+        click: this._debounceEvent((e: JQuery.Event) => { this._moveToNextTab(e); })
       });
 
       // Handle previous tab
       this.$navPrev = this.$navPrev || $();
       this.$navPrev = this._getCustomNavSelector(this.$navPrev, 'Prev');
       this._on(this.$navPrev, {
-        click: this.debounceEvent((e: JQuery.Event) => { this._moveToPrevTab(e); })
+        click: this._debounceEvent((e: JQuery.Event) => { this._moveToPrevTab(e); })
       });
 
       // Handle First tab
       this.$navFirst = this.$navFirst || $();
       this.$navFirst = this._getCustomNavSelector(this.$navFirst, 'First');
       this._on(this.$navFirst, {
-        click: this.debounceEvent((e: JQuery.Event) => { this._moveToFirstTab(e); })
+        click: this._debounceEvent((e: JQuery.Event) => { this._moveToFirstTab(e); })
       });
 
       // Handle last tab
       this.$navLast = this.$navLast || $();
       this.$navLast = this._getCustomNavSelector(this.$navLast, 'Last');
       this._on(this.$navLast, {
-        click: this.debounceEvent((e: JQuery.Event) => { this._moveToLastTab(e); })
+        click: this._debounceEvent((e: JQuery.Event) => { this._moveToLastTab(e); })
       });
     },
     /**
