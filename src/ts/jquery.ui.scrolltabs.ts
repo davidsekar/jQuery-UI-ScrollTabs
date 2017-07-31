@@ -68,8 +68,14 @@
       $innerWrapper.append(this.$ul);
       /* End */
 
-      this._setOption('activate', (event: JQuery.Event, ui: JQueryUI.TabsActivationUIParams) => {
-        this._animateToActiveTab(event);
+      /**
+       * jQuery UI widget automatically adds the widget name to the triggered
+       * events. So instead of 'tabsactivate' event, bind to 'scrolltabsactivate'.
+       */
+      this._on(this.element, {
+        scrolltabsactivate: (event: JQuery.Event, ui: JQueryUI.TabsActivationUIParams) => {
+          this._animateToActiveTab(event);
+        }
       });
 
       // Call the base
@@ -275,9 +281,10 @@
       const arrowsWidth = this.$leftArrowWrapper.width();
 
       // Check if the new tab is in view
-      if (leftPosition.left < currentScroll) {
+      if (leftPosition.left < (currentScroll + arrowsWidth)) {
         hiddenDirection = leftPosition.left - currentScroll - arrowsWidth;
-      } else if (leftPosition.left + width + arrowsWidth > currentScroll + currentVisibleWidth) {
+      } else if (
+        (leftPosition.left + width + arrowsWidth) > (currentScroll + currentVisibleWidth)) {
         hiddenDirection = (leftPosition.left + width + arrowsWidth)
           - (currentScroll + currentVisibleWidth);
       }
@@ -377,7 +384,9 @@
      * @param e pass the link click event
      */
     _moveToNextTab(e: JQuery.Event) {
-      e.preventDefault();
+      if (e) {
+        e.preventDefault();
+      }
 
       if (!this.options.scrollOptions.selectTabAfterScroll) {
         this._scrollWithoutSelection(this.navigateOptions.next);
@@ -390,8 +399,9 @@
      * @param e pass the link click event
      */
     _moveToPrevTab(e: JQuery.Event) {
-      e.preventDefault();
-
+      if (e) {
+        e.preventDefault();
+      }
       if (!this.options.scrollOptions.selectTabAfterScroll) {
         this._scrollWithoutSelection(this.navigateOptions.previous);
         return;
@@ -403,8 +413,9 @@
      * @param e pass the link click event
      */
     _moveToFirstTab(e?: JQuery.Event) {
-      e.preventDefault();
-
+      if (e) {
+        e.preventDefault();
+      }
       if (!this.options.scrollOptions.selectTabAfterScroll) {
         this._scrollWithoutSelection(this.navigateOptions.first);
         return;
@@ -420,7 +431,6 @@
       if (e) {
         e.preventDefault();
       }
-
       if (!this.options.scrollOptions.selectTabAfterScroll) {
         this._scrollWithoutSelection(this.navigateOptions.last);
         return;
