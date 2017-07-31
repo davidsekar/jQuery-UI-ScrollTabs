@@ -71,17 +71,17 @@ $(() => {
       headerHTML: '<div class="ui-widget-header ui-corner-all"/>',
       headerScrollHTML: '<div style="background-color:#ccc;" class="ui-scroll-tabs-view"/>',
       leftArrowWrapperHTML: '<div class="stNavMain stNavMainLeft"/>',
-      prevArrowButtonHTML: '<a href="javascript:void(0)"' +
+      customMovePreviousHTML: '<a href="javascript:void(0)"' +
       ' class="stNavPrevArrow ui-state-active navbutton"' +
       ' title="Previous">Previous tab</a>',
-      firstArrowButtonHTML: '<a href="javascript:void(0)"' +
+      customGotoFirstHTML: '<a href="javascript:void(0)"' +
       ' class="stNavFirstArrow ui-state-active navbutton" title="First">' +
       'First tab</a>',
       rightArrowWrapperHTML: '<div class="stNavMain stNavMainRight"/>',
-      nextArrowButtonHTML: '<a href="javascript:void(0)"' +
+      customMoveNextHTML: '<a href="javascript:void(0)"' +
       ' class="stNavNextArrow ui-state-active navbutton" title="Next">' +
       'Next tab</a>',
-      lastArrowButtonHTML: '<a href="javascript:void(0)"' +
+      customGoToLastHTML: '<a href="javascript:void(0)"' +
       ' class="stNavLastArrow ui-state-active navbutton" title="Last">' +
       'Last Tab</a>',
     }
