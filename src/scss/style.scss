@@ -59,6 +59,8 @@
         // 'no-wrap' will work only if li acts as an inline element
         display: inline-block;
         float: none;
+        padding: 0;
+        margin: 0 0 -0.25em;
         &.stHasCloseBtn a {
           padding-right: 0.5em;
         }

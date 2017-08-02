@@ -191,7 +191,7 @@
       this.$scrollDiv = this.$ul.parent();
 
       // Set the height of the UL
-      this.$scrollDiv.height(this.tabs.first().outerHeight());
+      // this.$scrollDiv.height(this.tabs.first().outerHeight());
 
       this.$leftArrowWrapper = $(this.options.scrollOptions.leftArrowWrapperHTML);
       this.$rightArrowWrapper = $(this.options.scrollOptions.rightArrowWrapperHTML);
