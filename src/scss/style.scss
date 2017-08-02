@@ -63,6 +63,9 @@
         margin: 0 0 -0.25em;
         &.stHasCloseBtn a {
           padding-right: 0.5em;
+          &:focus{
+            outline: none;
+          }
         }
         span.stCloseBtn {
           float: left;
