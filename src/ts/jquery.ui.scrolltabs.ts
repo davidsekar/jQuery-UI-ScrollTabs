@@ -131,19 +131,22 @@
       JQuery.EventHandler<HTMLElement> {
       return this.debounceEnabled ? $.throttle(this.eventDelay, dbFunc) : dbFunc;
     },
-    _scrollTabHeader(distance: number, duration: number) {
+    _scrollTabHeader(distance: number, duration: number, animate: boolean = true) {
       if (distance < 0) {
         distance = 0;
       }
-      this.$scrollDiv.animate({ scrollLeft: distance },
-        duration, this.options.scrollOptions.easing);
+      if (animate) {
+        this.$scrollDiv.animate({ scrollLeft: distance },
+          duration, this.options.scrollOptions.easing);
+      } else {
+        this.$scrollDiv.scrollLeft(distance);
+      }
     },
     _bindTouchEvents() {
       if (!$.fn.swipe) {
         return;
       }
       this.$scrollDiv.swipe({
-        threshold: 75,
         triggerOnTouchEnd: true,
         allowPageScroll: 'vertical',
         swipeStatus: (event: any, phase: any, direction: any, distance: any) => {
@@ -155,11 +158,12 @@
 
             const currentScrollLeft = this.$scrollDiv.scrollLeft();
             const duration = 0;
-            const distanceWithResistance = distance / 15;
+            // const distanceWithResistance = distance / 15;
+            const distanceWithResistance = distance / 7;
             if (direction === $.fn.swipe.directions.LEFT) {
-              this._scrollTabHeader(currentScrollLeft + distanceWithResistance, duration);
+              this._scrollTabHeader(currentScrollLeft + distanceWithResistance, duration, false);
             } else if (direction === $.fn.swipe.directions.RIGHT) {
-              this._scrollTabHeader(currentScrollLeft - distanceWithResistance, duration);
+              this._scrollTabHeader(currentScrollLeft - distanceWithResistance, duration, false);
             }
           } else if (phase === $.fn.swipe.phases.PHASE_CANCEL) {
             // Don't animate for current swipe, as it is canceled
@@ -178,7 +182,7 @@
           mousewheel: (event: any) => {
             event.preventDefault();
             self._scrollWithoutSelection(this.navigateOptions.mouseScroll,
-              event.deltaY * event.deltaFactor * 2.5);
+              event.deltaY * event.deltaFactor * 3.5);
             self._debug(event.deltaX + ',' + event.deltaY + ',' + event.deltaFactor);
           }
         });
