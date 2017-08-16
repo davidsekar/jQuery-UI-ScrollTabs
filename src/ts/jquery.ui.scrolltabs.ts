@@ -11,8 +11,10 @@
     $navNext: null,
     $navFirst: null,
     $navLast: null,
+    $innerWrapper: null,
     debounceEnabled: false,
-    eventDelay: 350,
+    eventDelay: 250,
+    sbarWidth: null,
     options: {
       scrollOptions: {
         closable: true,
@@ -38,7 +40,7 @@
         scrollSpeed: 500,
         selectTabAfterScroll: true,
         selectTabOnAdd: true,
-        showFirstLastArrows: true,
+        showFirstLastArrows: false,
         showNavWhenNeeded: true,
         wrapperCssClass: ''
       }
@@ -61,11 +63,11 @@
       $headerWrapper.addClass('ui-scroll-tabs-header');
       $elem.prepend($headerWrapper);
 
-      const $innerWrapper = $(this.options.scrollOptions.headerScrollHTML);
-      $innerWrapper.addClass('ui-scroll-tabs-view');
-      $headerWrapper.append($innerWrapper);
+      this.$innerWrapper = $(this.options.scrollOptions.headerScrollHTML);
+      this.$innerWrapper.addClass('ui-scroll-tabs-view');
+      $headerWrapper.append(this.$innerWrapper);
 
-      $innerWrapper.append(this.$ul);
+      this.$innerWrapper.append(this.$ul);
       /* End */
 
       /**
@@ -84,6 +86,26 @@
       this._setupUserOptions();
 
       this._debug(this.eventNamespace);
+    },
+    _findScrollbarWidth() {
+      let parent: JQuery<HTMLElement>;
+      let child: JQuery<HTMLElement>;
+
+      if (this.sbarWidth === null) {
+        const style = document.createElement('style');
+        style.innerHTML = '.__sb-test::-webkit-scrollbar { width: 0px; }';
+        document.body.appendChild(style);
+
+        parent = $('<div class="__sb-test" style="width:50px;height:50px;overflow:auto;">' +
+          '<div/></div>')
+          .appendTo('body');
+        child = parent.children();
+        this.sbarWidth = child.innerWidth() - child.height(99).innerWidth();
+
+        // clean
+        parent.remove();
+        document.body.removeChild(style);
+      }
     },
     _setOption(key: string, value: any) {
       this._super(key, value);
@@ -131,50 +153,6 @@
       JQuery.EventHandler<HTMLElement> {
       return this.debounceEnabled ? $.throttle(this.eventDelay, dbFunc) : dbFunc;
     },
-    _scrollTabHeader(distance: number, duration: number, animate: boolean = true) {
-      if (distance < 0) {
-        distance = 0;
-      }
-      if (animate) {
-        this.$scrollDiv.animate({ scrollLeft: distance },
-          duration, this.options.scrollOptions.easing);
-      } else {
-        this.$scrollDiv.scrollLeft(distance);
-      }
-    },
-    _bindTouchEvents() {
-      if (!$.fn.swipe) {
-        return;
-      }
-      this.$scrollDiv.swipe({
-        triggerOnTouchEnd: true,
-        allowPageScroll: 'vertical',
-        swipeStatus: (event: any, phase: any, direction: any, distance: any) => {
-          // If we are moving before swipe, and we are going
-          // L or R in X mode, or U or D in Y mode then drag.
-          if (phase === $.fn.swipe.phases.PHASE_MOVE
-            && (direction === $.fn.swipe.directions.LEFT
-              || direction === $.fn.swipe.directions.RIGHT)) {
-
-            const currentScrollLeft = this.$scrollDiv.scrollLeft();
-            const duration = 0;
-            // const distanceWithResistance = distance / 15;
-            const distanceWithResistance = distance / 7;
-            if (direction === $.fn.swipe.directions.LEFT) {
-              this._scrollTabHeader(currentScrollLeft + distanceWithResistance, duration, false);
-            } else if (direction === $.fn.swipe.directions.RIGHT) {
-              this._scrollTabHeader(currentScrollLeft - distanceWithResistance, duration, false);
-            }
-          } else if (phase === $.fn.swipe.phases.PHASE_CANCEL) {
-            // Don't animate for current swipe, as it is canceled
-            // this._showNavsIfNeeded();
-          } else if (phase === $.fn.swipe.phases.PHASE_END) {
-            // to be added
-            this._showNavsIfNeeded();
-          }
-        }
-      });
-    },
     _bindMouseScroll() {
       if ($.isFunction($.fn.mousewheel)) {
         const self = this;
@@ -221,8 +199,14 @@
       this.$scrollDiv.after(this.$rightArrowWrapper);
 
       this._addclosebutton();
-      this._bindTouchEvents();
       this._bindMouseScroll();
+
+      // Triggers on the scroll end
+      this._on(this.$scrollDiv, {
+        scroll: this._debounceEvent(() => {
+          this._showNavsIfNeeded();
+        })
+      });
     },
     /**
      * Initializes all the controls and events required for scroll tabs
@@ -230,6 +214,7 @@
     _init() {
       this._setupNavControls();
       this._showNavsIfNeeded();
+      this._hideScrollBars();
       this._addNavEvents();
       this._on(window, {
         resize: this._debounceEvent(() => {
@@ -237,6 +222,10 @@
           this._showNavsIfNeeded();
         })
       });
+    },
+    _hideScrollBars() {
+      this._findScrollbarWidth();
+      this.$innerWrapper.css('margin-bottom', -1 * this.sbarWidth);
     },
     /**
      * Check if navigation need then show; otherwise hide it
@@ -260,6 +249,7 @@
 
       showRight ? this.$rightArrowWrapper.addClass('stNavVisible')
         : this.$rightArrowWrapper.removeClass('stNavVisible');
+      this._debug('Validate showing nav controls');
     },
     _callBackFnc(
       fName: (e: JQuery.Event, arg: any) => any,
@@ -322,8 +312,7 @@
       this.$scrollDiv.stop().animate(
         { scrollLeft },
         this.options.scrollOptions.scrollSpeed / 2,
-        this.options.scrollOptions.easing,
-        () => { this._showNavsIfNeeded(); });
+        this.options.scrollOptions.easing);
     },
     _animateToActiveTab(e?: JQuery.Event) {
       const calculatedDelta: number = this._getScrollDeltaValue(this.active);

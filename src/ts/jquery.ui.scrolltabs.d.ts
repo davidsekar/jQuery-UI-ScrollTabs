@@ -9,7 +9,6 @@ interface JQuery<TElement extends Node = HTMLElement> {
    * @returns Jquery&lt;HTMLElement>
    */
   scrollTabs: (options?: any) => JQuery<HTMLElement>;
-  swipe: JQuerySwipe<HTMLElement>;
   mousewheel: JQuery<HTMLElement>;
 }
 
@@ -29,41 +28,6 @@ declare namespace JQueryUI {
      */
     scrollTabs: (options?: any) => JQuery<HTMLElement>;
   }
-}
-
-/**
- * <a href="/jQuery-UI-ScrollTabs">< Back to project homepage</a><br><br>
- * List of phases defined in jQuery Swipe plugin
- */
-interface SwipePhases {
-  PHASE_START: string,
-  PHASE_MOVE: string,
-  PHASE_END: string,
-  PHASE_CANCEL: string
-}
-
-/**
- * <a href="/jQuery-UI-ScrollTabs">< Back to project homepage</a><br><br>
- * List of directions defined in jQuery Swipe plugin
- */
-interface SwipeDirections {
-  LEFT: string,
-  RIGHT: string,
-  UP: string,
-  DOWN: string,
-  IN: string,
-  OUT: string
-}
-
-/**
- * <a href="/jQuery-UI-ScrollTabs">< Back to project homepage</a><br><br>
- * Interface defined for external plugin used in ui.scrollTabs
- */
-interface JQuerySwipe<TElement extends Node = HTMLElement> {
-  (options: any): JQuery<HTMLElement>;
-  directions: SwipeDirections;
-  phases: SwipePhases;
-  [n: number]: TElement;
 }
 
 /**

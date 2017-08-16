@@ -4,7 +4,7 @@
 
 This is a pure jQuery UI widget that extends the default jQuery UI tabs. It handles all the markup enhancements within the widget create event and it works on the default widget HTML structure.
 
-This plugin is __'as customizable as'__ default widget with additional scrollable tab feature, keeps all your tabs on single line. You can have multiple instances of the widget, as well as nest them. It automatically handles showing the navigation controls like next, previous, first & last etc., on user options and works based on current device screen view-port which makes it ideal for responsive/fluid pages. It also has support for swipe events in touch enabled screens enabled _through optional dependency_.
+This plugin is __'as customizable as'__ default widget with additional scrollable tab feature, keeps all your tabs on single line. You can have multiple instances of the widget, as well as nest them. It automatically handles showing the navigation controls like next, previous, first & last etc., on user options and works based on current device screen view-port which makes it ideal for responsive/fluid pages.
 
 This plugin has few optional dependencies, when found in the $.fn scope will be used to enhance the plugin features.
 
@@ -16,7 +16,7 @@ Following libraries are
 
 _Optional Dependency:_
 - [jQuery debounce plugin](https://github.com/cowboy/jquery-throttle-debounce)
-- [jQuery TouchSwipe](https://github.com/mattbryson/TouchSwipe-Jquery-Plugin)
+- [jQuery MouseWheel](https://github.com/jquery/jquery-mousewheel)
 
 ### Basic Usage
 
@@ -31,7 +31,7 @@ Add the CSS and JS files
 <!-- Optionals starts -->
 <script type="text/javascript" src="js/jquery.ba-throttle-debounce.min.js"></script>
 
-<script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script>
+<script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
 
 <!-- Optional Ends -->
 

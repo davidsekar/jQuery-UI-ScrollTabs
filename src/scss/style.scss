@@ -11,8 +11,14 @@
 
 .ui-scroll-tabs {
   &-view {
+    -ms-touch-action: inherit;
+    touch-action: inherit;
     z-index: 1;
-    overflow: hidden;
+    overflow: scroll;
+    overflow-y: hidden;
+    &::-webkit-scrollbar {
+      display: none;
+    }
     .ui-widget-header {
       border: none;
       background: transparent;
@@ -21,19 +27,19 @@
   &-header {
     position: relative;
     overflow: hidden;
-    @extend %clearfix;
     .stNavMain {
       position: absolute;
       top: 0;
       z-index: 2;
       height: 100%;
       opacity: 0;
-      transition: left .5s, right .5s, opacity .8s;
+      transition: left .2s, right .2s, opacity .4s;
       transition-timing-function: swing;
-      button, .navbutton {
+      button,
+      .navbutton {
         height: 100%;
       }
-      .navbutton{
+      .navbutton {
         display: inline-block;
         padding: 5px;
       }
@@ -55,18 +61,19 @@
     ul.ui-tabs-nav {
       position: relative;
       white-space: nowrap;
+      @extend %clearfix;
       li {
         // 'no-wrap' will work only if li acts as an inline element
         display: inline-block;
         float: none;
         padding: 0;
         margin: 0 0 -0.25em;
-        &.ui-tabs-selected{
+        &.ui-tabs-selected {
           margin-bottom: -0.25em;
         }
         &.stHasCloseBtn a {
           padding-right: 0.5em;
-          &:focus{
+          &:focus {
             outline: none;
           }
         }
