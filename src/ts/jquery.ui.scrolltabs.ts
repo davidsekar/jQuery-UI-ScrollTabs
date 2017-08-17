@@ -13,7 +13,7 @@
     $navLast: null,
     $innerWrapper: null,
     debounceEnabled: false,
-    eventDelay: 250,
+    eventDelay: 200,
     sbarWidth: null,
     options: {
       scrollOptions: {
@@ -87,6 +87,9 @@
 
       this._debug(this.eventNamespace);
     },
+    /**
+     * Method to identify the correct width of the scrollbar in different devices
+     */
     _findScrollbarWidth() {
       let parent: JQuery<HTMLElement>;
       let child: JQuery<HTMLElement>;
@@ -161,7 +164,7 @@
             event.preventDefault();
             self._scrollWithoutSelection(this.navigateOptions.mouseScroll,
               event.deltaY * event.deltaFactor * 3.5);
-            self._debug(event.deltaX + ',' + event.deltaY + ',' + event.deltaFactor);
+            // self._debug(event.deltaX + ',' + event.deltaY + ',' + event.deltaFactor);
           }
         });
       }
