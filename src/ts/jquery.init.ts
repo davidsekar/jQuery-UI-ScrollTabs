@@ -11,6 +11,12 @@ $(() => {
   $('#example_0_1').tabs();
 
   $('#example_0_2').scrollTabs({
+    activate: () => {
+      console.log('activate triggered');
+    },
+    beforeActivate: () => {
+      console.log('before activate triggered');
+    },
     scrollOptions: {
       enableDebug: true,
       selectTabAfterScroll: false,
