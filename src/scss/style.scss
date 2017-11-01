@@ -33,7 +33,7 @@
       z-index: 2;
       height: 100%;
       transition: left .2s, right .2s, opacity .4s;
-      transition-timing-function: swing;
+      transition-timing-function: ease-in-out;
       button,
       .navbutton {
         height: 100%;
