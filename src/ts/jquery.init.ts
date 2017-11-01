@@ -20,7 +20,8 @@ $(() => {
     scrollOptions: {
       enableDebug: true,
       selectTabAfterScroll: false,
-      closable: false
+      closable: false,
+      showNavWhenNeeded: false
     }
   });
 

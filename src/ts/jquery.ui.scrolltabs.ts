@@ -12,6 +12,7 @@
     $navFirst: null,
     $navLast: null,
     $innerWrapper: null,
+    $headerWrapper: null,
     debounceEnabled: false,
     eventDelay: 200,
     sbarWidth: null,
@@ -59,13 +60,13 @@
       this.$ul = $elem.find('ol,ul').eq(0).detach();
 
       /* Add custom markup */
-      const $headerWrapper = $(this.options.scrollOptions.headerHTML);
-      $headerWrapper.addClass('ui-scroll-tabs-header');
-      $elem.prepend($headerWrapper);
+      this.$headerWrapper = $(this.options.scrollOptions.headerHTML);
+      this.$headerWrapper.addClass('ui-scroll-tabs-header');
+      $elem.prepend(this.$headerWrapper);
 
       this.$innerWrapper = $(this.options.scrollOptions.headerScrollHTML);
       this.$innerWrapper.addClass('ui-scroll-tabs-view');
-      $headerWrapper.append(this.$innerWrapper);
+      this.$headerWrapper.append(this.$innerWrapper);
 
       this.$innerWrapper.append(this.$ul);
       /* End */
@@ -182,17 +183,17 @@
       this.$rightArrowWrapper = $(this.options.scrollOptions.rightArrowWrapperHTML);
 
       if (!this.options.scrollOptions.hideDefaultArrows) {
-        this.$navPrev = $(this.options.scrollOptions.customMovePreviousHTML);
+        this.$navPrev = $(this.options.scrollOptions.customMovePreviousHTML).button();
         this.$leftArrowWrapper.append(this.$navPrev);
 
-        this.$navNext = $(this.options.scrollOptions.customMoveNextHTML);
+        this.$navNext = $(this.options.scrollOptions.customMoveNextHTML).button();
         this.$rightArrowWrapper.append(this.$navNext);
 
         if (this.options.scrollOptions.showFirstLastArrows === true) {
-          this.$navFirst = $(this.options.scrollOptions.customGotoFirstHTML);
+          this.$navFirst = $(this.options.scrollOptions.customGotoFirstHTML).button();
           this.$leftArrowWrapper.prepend(this.$navFirst);
 
-          this.$navLast = $(this.options.scrollOptions.customGoToLastHTML);
+          this.$navLast = $(this.options.scrollOptions.customGoToLastHTML).button();
           this.$rightArrowWrapper.append(this.$navLast);
         } else {
           this.$navFirst = this.$navLast = $();
@@ -200,6 +201,13 @@
       }
       this.$scrollDiv.before(this.$leftArrowWrapper);
       this.$scrollDiv.after(this.$rightArrowWrapper);
+
+      this._debug('showNavWhenNeeded ' + this.showNavWhenNeeded);
+      if (this.options.scrollOptions.showNavWhenNeeded) {
+        this.$headerWrapper.addClass('show-controls-when-required');
+      } else {
+        this.$headerWrapper.addClass('show-controls-always');
+      }
 
       this._addclosebutton();
       this._bindMouseScroll();
@@ -236,10 +244,6 @@
      * Check if navigation need then show; otherwise hide it
      */
     _showNavsIfNeeded() {
-      if (this.options.scrollOptions.showNavWhenNeeded === false) {
-        return; // do nothing
-      }
-
       let showLeft = !(this.$scrollDiv.scrollLeft() <= 0);
       let showRight = !(Math.abs(this.$scrollDiv[0].scrollWidth - this.$scrollDiv.scrollLeft()
         - this.$scrollDiv.outerWidth()) < 1);
@@ -254,6 +258,22 @@
 
       showRight ? this.$rightArrowWrapper.addClass('stNavVisible')
         : this.$rightArrowWrapper.removeClass('stNavVisible');
+
+      if (this.options.scrollOptions.showNavWhenNeeded === false) {
+
+        this.$navFirst.button('option', 'disabled', !showLeft);
+        this.$navPrev.button('option', 'disabled', !showLeft);
+
+        this.$navLast.button('option', 'disabled', !showRight);
+        this.$navNext.button('option', 'disabled', !showRight);
+
+        if (showLeft || showRight) {
+          this.$headerWrapper.addClass('st-activate-controls');
+        } else {
+          this.$headerWrapper.removeClass('st-activate-controls');
+        }
+      }
+
       this._debug('Validate showing nav controls');
     },
     _callBackFnc(
