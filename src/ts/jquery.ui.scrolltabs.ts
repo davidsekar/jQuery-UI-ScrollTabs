@@ -21,11 +21,11 @@
         customGotoFirstHTML: '<button class="stNavFirstArrow ui-state-active" title="First">' +
         '<span class="ui-icon ui-icon-seek-first">First tab</span></button>',
         customMoveNextHTML: '<button class="stNavNextArrow ui-state-active" title="Next">' +
-        '<span class="ui-icon ui-icon-seek-next">Next tab</span></button>',
+        '<span class="ui-icon ui-icon-carat-1-e">Next tab</span></button>',
         customGoToLastHTML: '<button class="stNavLastArrow ui-state-active" title="Last">' +
         '<span class="ui-icon ui-icon-seek-end">Last tab</span></button>',
         customMovePreviousHTML: '<button class="stNavPrevArrow ui-state-active" title="Previous">' +
-        '<span class="ui-icon ui-icon-seek-prev">Previous tab</span></button>',
+        '<span class="ui-icon ui-icon-carat-1-w">Previous tab</span></button>',
         easing: 'swing',
         enableDebug: false,
         headerHTML: '<div class="ui-widget-header ui-corner-all"/>',
@@ -216,7 +216,9 @@
      */
     _init() {
       this._setupNavControls();
-      this._showNavsIfNeeded();
+      setTimeout(() => {
+        this._showNavsIfNeeded();
+      }, this.eventDelay);
       this._hideScrollBars();
       this._addNavEvents();
       this._on(window, {
