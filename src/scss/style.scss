@@ -32,7 +32,6 @@
       top: 0;
       z-index: 2;
       height: 100%;
-      opacity: 0;
       transition: left .2s, right .2s, opacity .4s;
       transition-timing-function: swing;
       button,
@@ -46,16 +45,36 @@
     }
     .stNavMainLeft {
       left: -250px;
-      &.stNavVisible {
-        left: 0;
-        opacity: 1;
-      }
     }
     .stNavMainRight {
       right: -250px;
-      &.stNavVisible {
+    }
+    /* Show when required - overlays button on top */
+    &.show-controls-when-required {
+      .stNavMain {
+        opacity: 0;
+      }
+      .stNavMainLeft {
+        &.stNavVisible {
+          left: 0;
+          opacity: 1;
+        }
+      }
+      .stNavMainRight {
+        &.stNavVisible {
+          right: 0;
+          opacity: 1;
+        }
+      }
+    }
+    /* Show always - reserves the space and shows the button in disable state */
+    &.show-controls-always.st-activate-controls {
+      padding: 0 42px;
+      .stNavMainLeft {
+        left: 0;
+      }
+      .stNavMainRight {
         right: 0;
-        opacity: 1;
       }
     }
     ul.ui-tabs-nav {
