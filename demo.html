@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="title" content="jQuery UI scrollable tabs" />
+  <meta name="keywords" content="jquery, tabs, scrollable, scroll">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>jQuery UI scrollable tabs</title>
+  <link type="text/css" href="css/ui-lightness/jquery.ui.all.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" type="text/css">
+  <script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript" src="js/jquery-migrate-1.2.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery.ba-throttle-debounce.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui-1.11.4.min.js"></script>
+  <script type="text/javascript" src="js/jquery.mousewheel.min.js"></script>
+  <script type="text/javascript" src="js/jquery.ui.scrolltabs.js"></script>
+  <script type="text/javascript" src="js/jquery.init.js"></script>
+  <style type="text/css">
+    body {
+      font-size: 11px;
+      font-family: "Helvetica Neue", HelveticaNeue, Helvetica, sans-serif;
+      margin: 0;
+      padding: 10px;
+    }
+
+    p {
+      font-size: 13px
+    }
+
+    h1 {
+      font-size: 20px;
+    }
+
+    h1 a {
+      font-size: 14px;
+      float: right;
+    }
+
+    h1::after {
+      content: ' ';
+      clear: both;
+      display: block;
+    }
+
+    h2 {
+      font-size: 16px;
+      text-decoration: underline;
+    }
+
+    .border {
+      border: 1px solid #ccc;
+      padding: 5px 10px 30px;
+      box-shadow: 4px 4px 5px #888888;
+    }
+
+    #back-to-top{
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      padding: 5px 10px;
+    }
+
+  </style>
+</head>
+
+<body>
+  <h1>DEMO - JQUERY UI SCROLLTABS <a href="./">Back to <br>Homepage</a></h1>
+  <div class="border">
+    <h2>1. Default tabs control</h2>
+    <div id="example_0_1">
+      <ul role="tablist">
+        <li role="tab"><a href="#tabs-0-1-1" role="presentation">Tab 1</a></li>
+        <li role="tab"><a href="#tabs-0-1-2" role="presentation">This is tab 2</a></li>
+        <li role="tab"><a href="#tabs-0-1-3" role="presentation">This is tab number 3</a></li>
+        <li role="tab"><a href="#tabs-0-1-4" role="presentation">Tab no 4</a></li>
+        <li role="tab"><a href="#tabs-0-1-5" role="presentation">And tab number 5</a></li>
+        <li role="tab"><a href="#tabs-0-1-6" role="presentation">Tab number 6</a></li>
+        <li role="tab"><a href="#tabs-0-1-7" role="presentation">And last tab number 7</a></li>
+        <li role="tab"><a href="#tabs-0-1-8" role="presentation">Very very long name 8</a></li>
+        <li role="tab"><a href="#tabs-0-1-9" role="presentation">Short name 9</a></li>
+      </ul>
+      <div id="tabs-0-1-1" role="tabpanel">Tab 1<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce purus
+        leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-2" role="tabpanel">This is tab 2<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-3" role="tabpanel">This is tab number 3<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-4" role="tabpanel">Tab no 4<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce purus
+        leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-5" role="tabpanel">And this is the tab number 5<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate
+        porttitor. Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius
+        sagittis eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-6" role="tabpanel">Tab number 6<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-7" role="tabpanel">And last tab number 7<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-8" role="tabpanel">Very very long name 8<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-9" role="tabpanel">Short name 9<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+    </div>
+  </div>
+  <br/>
+  <div class="border">
+    <h2>2. Destroy just a specific widget without affecting others (Allows multiple instance on a page)</h2>
+    <div id="example_0_2">
+      <ul role="tablist">
+        <li role="tab"><a href="#tabs-0-1-2-1" role="presentation">Tab 1</a></li>
+        <li role="tab"><a href="#tabs-0-1-2-2" role="presentation">This is tab 2</a></li>
+        <li role="tab"><a href="#tabs-0-1-2-3" role="presentation">This is tab number 3</a></li>
+        <li role="tab"><a href="#tabs-0-1-2-4" role="presentation">Tab no 4</a></li>
+        <li role="tab"><a href="#tabs-0-1-2-5" role="presentation">And tab number 5</a></li>
+        <li role="tab"><a href="#tabs-0-1-2-6" role="presentation">Tab number 6</a></li>
+        <li role="tab"><a href="#tabs-0-1-2-7" role="presentation">And last tab number 7</a></li>
+        <li role="tab"><a href="#tabs-0-1-2-8" role="presentation">Very very long name 8</a></li>
+        <li role="tab"><a href="#tabs-0-1-2-9" role="presentation">Short name 9</a></li>
+      </ul>
+      <div id="tabs-0-1-2-1" role="tabpanel">Tab 1<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce purus
+        leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-2-2" role="tabpanel">This is tab 2<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-2-3" role="tabpanel">This is tab number 3<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-2-4" role="tabpanel">Tab no 4<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce purus
+        leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-2-5" role="tabpanel">And this is the tab number 5<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate
+        porttitor. Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius
+        sagittis eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-2-6" role="tabpanel">Tab number 6<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-2-7" role="tabpanel">And last tab number 7<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-2-8" role="tabpanel">Very very long name 8<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-1-2-9" role="tabpanel">Short name 9<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+    </div>
+    <br/>
+    <button onclick="$('#example_0_2').scrollTabs('destroy');$(this).attr('disabled','disabled');">Destroy this tabs</button>
+  </div>
+  <br/>
+  <div class="border">
+    <h2>3. Public methods to add, remove and destroy tab.<br/> Navigate using controls without selecting the tab</h2>
+    <div id="example_0">
+      <ul role="tablist">
+        <li role="tab"><a href="#tabs-0-1" role="presentation">Tab 1</a></li>
+        <li role="tab"><a href="#tabs-0-2" role="presentation">This is tab 2</a></li>
+        <li role="tab"><a href="#tabs-0-3" role="presentation">This is tab number 3</a></li>
+        <li role="tab"><a href="#tabs-0-4" role="presentation">Tab no 4</a></li>
+        <li role="tab"><a href="#tabs-0-5" role="presentation">And tab number 5</a></li>
+        <li role="tab"><a href="#tabs-0-6" role="presentation">Tab number 6</a></li>
+        <li role="tab"><a href="#tabs-0-7" role="presentation">And last tab number 7</a></li>
+        <li role="tab"><a href="#tabs-0-8" role="presentation">Very very long name 8</a></li>
+        <li role="tab"><a href="#tabs-0-9" role="presentation">Short name 9</a></li>
+      </ul>
+      <div id="tabs-0-1" role="tabpanel">Tab 1<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce purus
+        leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-2" role="tabpanel">This is tab 2<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-3" role="tabpanel">This is tab number 3<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-4" role="tabpanel">Tab no 4<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce purus
+        leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-5" role="tabpanel">And this is the tab number 5<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate
+        porttitor. Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius
+        sagittis eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-6" role="tabpanel">Tab number 6<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-7" role="tabpanel">And last tab number 7<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-8" role="tabpanel">Very very long name 8<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-0-9" role="tabpanel">Short name 9<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+    </div>
+    <br>
+    <button onclick="$('#example_0').scrollTabs('destroy');$(this).attr('disabled','disabled');">Destroy this tabs</button>&nbsp;
+    <button id="addRandomTab" type="button">Add new random tab</button>
+    <br />
+  </div>
+  <br/>
+  <br />
+  <div class="border">
+    <h2>4. Nested tabs,<br/> Select tab on navigate to previous or next tabs</h2>
+    <div id="example_1">
+      <ul role="tablist">
+        <li role="tab"><a href="#tabs-1" role="presentation">Tab 1</a></li>
+        <li role="tab"><a href="#tabs-2" role="presentation">This is tab 2</a></li>
+        <li role="tab"><a href="#tabs-3" role="presentation">This is tab number 3</a></li>
+        <li role="tab"><a href="#tabs-4" role="presentation">Tab no 4</a></li>
+        <li role="tab"><a href="#tabs-5" role="presentation">And tab number 5</a></li>
+        <li role="tab"><a href="#tabs-6" role="presentation">Tab number 6</a></li>
+        <li role="tab"><a href="#tabs-7" role="presentation">And last tab number 7</a></li>
+        <li role="tab"><a href="#tabs-8" role="presentation">Very very long name 8</a></li>
+        <li role="tab"><a href="#tabs-9" role="presentation">Short name 9</a></li>
+      </ul>
+      <div id="tabs-1" role="tabpanel">
+        <div id="example_3">
+
+          <ul role="tablist">
+            <li role="tab"><a href="#tabs-1-1" role="presentation">Tab 1</a></li>
+            <li role="tab"><a href="#tabs-1-2" role="presentation">This is tab 2</a></li>
+            <li role="tab"><a href="#tabs-1-3" role="presentation">This is tab number 3</a></li>
+            <li role="tab"><a href="#tabs-1-4" role="presentation">Tab no 4</a></li>
+            <li role="tab"><a href="#tabs-1-5" role="presentation">And tab number 5</a></li>
+            <li role="tab"><a href="#tabs-1-6" role="presentation">Tab number 6</a></li>
+            <li role="tab"><a href="#tabs-1-7" role="presentation">And last tab number 7</a></li>
+            <li role="tab"><a href="#tabs-1-8" role="presentation">Very very long name 8</a></li>
+            <li role="tab"><a href="#tabs-1-9" role="presentation">Short name 9</a></li>
+          </ul>
+
+          <div id="tabs-1-1" role="tabpanel">Tab 1<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+            purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros
+            imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+          <div id="tabs-1-2" role="tabpanel">This is tab 2<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+            Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+            eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+          <div id="tabs-1-3" role="tabpanel">This is tab number 3<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+            Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+            eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+          <div id="tabs-1-4" role="tabpanel">Tab no 4<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+            purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros
+            imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+          <div id="tabs-1-5" role="tabpanel">And this is the tab number 5<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate
+            porttitor. Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius
+            sagittis eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+          <div id="tabs-1-6" role="tabpanel">Tab number 6<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+            Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+            eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+          <div id="tabs-1-7" role="tabpanel">And last tab number 7<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+            Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+            eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+          <div id="tabs-1-8" role="tabpanel">Very very long name 8<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+            Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+            eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+          <div id="tabs-1-9" role="tabpanel">Short name 9<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+            Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+            eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+        </div>
+
+      </div>
+      <div id="tabs-2" role="tabpanel">This is tab 2<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-3" role="tabpanel">This is tab number 3<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-4" role="tabpanel">Tab no 4<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce purus
+        leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-5" role="tabpanel">And this is the tab number 5<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate
+        porttitor. Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius
+        sagittis eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-6" role="tabpanel">Tab number 6<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-7" role="tabpanel">And last tab number 7<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-8" role="tabpanel">Very very long name 8<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-9" role="tabpanel">Short name 9<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+    </div>
+    <br />
+    <h2>5. Binding navigation events to external selector</h2>
+    <br />
+    <a class="ui-state-default ui-corner-all" id="f" href="javascript:void(0)" style="padding:20px;text-decoration:none;position:relative"> First </a>    &nbsp;&nbsp;&nbsp;
+    <a class="ui-state-default ui-corner-all" id="p" href="javascript:void(0)" style="padding:20px;text-decoration:none;position:relative"> Prev </a>    &nbsp;&nbsp;&nbsp;
+    <a class="ui-state-default ui-corner-all" id="n" href="javascript:void(0)" style="padding:20px;text-decoration:none;position:relative"> Next </a>    &nbsp;&nbsp;&nbsp;
+    <a class="ui-state-default ui-corner-all" id="l" href="javascript:void(0)" style="padding:20px;text-decoration:none;position:relative"> Last </a>
+  </div>
+  <br /><br />
+  <div class="border">
+    <h2>6. Use your custom HTML</h2>
+    <div id="example_2">
+      <ul role="tablist">
+        <li role="tab"><a href="#tabs-1" role="presentation">Tab 1</a></li>
+        <li role="tab"><a href="#tabs-2" role="presentation">This is tab 2</a></li>
+        <li role="tab"><a href="#tabs-3" role="presentation">This is tab number 3</a></li>
+        <li role="tab"><a href="#tabs-4" role="presentation">Tab no 4</a></li>
+        <li role="tab"><a href="#tabs-5" role="presentation">And tab number 5</a></li>
+        <li role="tab"><a href="#tabs-6" role="presentation">Tab number 6</a></li>
+        <li role="tab"><a href="#tabs-7" role="presentation">And last tab number 7</a></li>
+        <li role="tab"><a href="#tabs-8" role="presentation">Very very long name 8</a></li>
+        <li role="tab"><a href="#tabs-9" role="presentation">Short name 9</a></li>
+      </ul>
+      <div id="tabs-1" role="tabpanel">Tab 1<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce purus
+        leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-2" role="tabpanel">This is tab 2<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-3" role="tabpanel">This is tab number 3<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-4" role="tabpanel">Tab no 4<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce purus
+        leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-5" role="tabpanel">And this is the tab number 5<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate
+        porttitor. Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius
+        sagittis eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-6" role="tabpanel">Tab number 6<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-7" role="tabpanel">And last tab number 7<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-8" role="tabpanel">Very very long name 8<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor.
+        Fusce purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis
+        eros imperdiet in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+      <div id="tabs-9" role="tabpanel">Short name 9<br>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit vulputate porttitor. Fusce
+        purus leo, faucibus a sagittis congue, molestie tempus felis. Donec convallis semper enim, varius sagittis eros imperdiet
+        in. Vivamus semper sem at metus mattis a aliquam neque ornare. Proin sed semper lacus.</div>
+    </div>
+  </div>
+  <button type="button" id="back-to-top">Go to Top</button>
+</body>
+
+</html>
