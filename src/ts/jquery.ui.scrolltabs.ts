@@ -249,8 +249,8 @@
         - this.$scrollDiv.outerWidth()) < 1);
 
       if (this.options.scrollOptions.selectTabAfterScroll) {
-        showLeft = !(this.options.active === 0);
-        showRight = (this.options.active + 1 === this.tabs.length) ? false : true;
+        showLeft = (this.options.active === 0) ? false : showLeft;
+        showRight = (this.options.active + 1 === this.tabs.length) ? false : showRight;
       }
 
       showLeft ? this.$leftArrowWrapper.addClass('stNavVisible')
